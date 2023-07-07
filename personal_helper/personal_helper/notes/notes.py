@@ -8,21 +8,20 @@ while True:
     choice = input('Введіть номер опції: ')
 
     if choice == '1':
-        # Додавання нової нотатки
+        # Додавання та збереження нотатки
         title = input('Введіть заголовок нотатки: ')
         content = input('Введіть текст нотатки: ')
         note = {'title': title, 'content': content}
         notes.append(note)
-        print('Нотатка успішно додана!')
-
-    elif choice == '2':
-        # Збереження нотаток у файл
         with open('notes.txt', 'w') as file:
             for note in notes:
                 file.write(f"Заголовок: {note['title']}\n")
                 file.write(f"Текст: {note['content']}\n")
                 file.write('\n')
-        print('Нотатки збережені у файлі notes.txt')
+        print('Нотатка успішно додана та збережена!')
+
+    elif choice == '2':
+        # Вихід з програми
         break
 
     else:
