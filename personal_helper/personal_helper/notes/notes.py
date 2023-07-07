@@ -13,11 +13,10 @@ while True:
         content = input('Введіть текст нотатки: ')
         note = {'title': title, 'content': content}
         notes.append(note)
-        with open('notes.txt', 'w') as file:
-            for note in notes:
-                file.write(f"Заголовок: {note['title']}\n")
-                file.write(f"Текст: {note['content']}\n")
-                file.write('\n')
+        with open('notes.txt', 'a') as file:
+            file.write(f"Заголовок: {note['title']}\n")
+            file.write(f"Текст: {note['content']}\n")
+            file.write('\n')
         print('Нотатка успішно додана та збережена!')
 
     elif choice == '2':
