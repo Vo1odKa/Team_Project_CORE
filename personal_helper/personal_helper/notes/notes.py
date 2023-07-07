@@ -1,27 +1,27 @@
 notes = []
 
 while True:
-    print('Меню:')
-    print('1. Додати нотатку')
-    print('2. Вийти')
+    print('Menu:')
+    print('1. Add a note')
+    print('2. Go out')
 
-    choice = input('Введіть номер опції: ')
+    choice = input('Enter the option number: ')
 
     if choice == '1':
-        # Додавання та збереження нотатки
-        title = input('Введіть заголовок нотатки: ')
-        content = input('Введіть текст нотатки: ')
+       # Додавання та збереження нотатки
+        title = input('Enter a title for the note: ')
+        content = input('Enter the note text: ')
         note = {'title': title, 'content': content}
         notes.append(note)
         with open('notes.txt', 'a') as file:
-            file.write(f"Заголовок: {note['title']}\n")
-            file.write(f"Текст: {note['content']}\n")
+            file.write(f"Title: {note['title']}\n")
+            file.write(f"Text: {note['content']}\n")
             file.write('\n')
-        print('Нотатка успішно додана та збережена!')
+        print('Note successfully added and saved!')
 
     elif choice == '2':
         # Вихід з програми
         break
 
     else:
-        print('Невірний ввід. Будь ласка, спробуйте ще раз.')
+        print('Invalid input. Please try again.')
