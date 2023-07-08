@@ -28,7 +28,6 @@ def normalize(name):
             normalized_name += '_'
     return normalized_name
 
-
 def sort_files(folder_path):
     image_extensions = ('.jpeg', '.png', '.jpg', '.svg')
     video_extensions = ('.avi', '.mp4', '.mov', '.mkv')
@@ -88,7 +87,6 @@ def extract_file(file_path, destination_folder):
 
     os.remove(file_path)
 
-
 def main():
     if len(sys.argv) == 2:
         folder_name = sys.argv[1]
@@ -104,10 +102,7 @@ def main():
     sort_files(folder_path)
     print("First file sorting completed successfully.")
 
-    # Sort the files again after extraction
     sort_files(folder_path)
-    print("Second file sorting completed successfully.")
-
 
 if __name__ == "__main__":
     main()
