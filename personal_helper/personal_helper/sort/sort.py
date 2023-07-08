@@ -100,10 +100,10 @@ def extract_file(file_path, destination_folder):
             with open(extract_path, 'wb') as extract_file:
                 extract_file.write(gz_ref.read())
 
-    os.remove(file_path)  # Remove the original archive file after extraction
+    os.remove(file_path) 
 
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) == 2:
         folder_name = sys.argv[1]
     else:
@@ -117,3 +117,7 @@ if __name__ == "__main__":
 
     sort_files(folder_path)
     print("File sorting completed successfully.")
+
+
+if __name__ == "__main__":
+    main()
