@@ -100,6 +100,10 @@ class Field:
         self.phone = re.findall('\d+', data)
         # Відокремлення дати, що має формат дд/мм/рррр (маєця на увазі, що вона має бути введена тільки одна)
         self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
+        # Відокремлює всі електронні поштові адреси
+        self.email = re.findall('[a-zA-Z0-9_.]+@[a-z]+.[a-z]+', data)
+
+        self.address = ' '.join(re.findall('[a-z]+', data))
 
 
 # Об'єкти класу "ім'я контакту"
@@ -149,6 +153,16 @@ class Birthday(Field):
         except:
             pass
 
+
+# Обєкти класу "електронна пошта"
+class Email(Field):
+    def __init__(self, email):
+        super().__init__(email)
+
+
+# Обєкти класу "адреса"
+class Address(Field):
+    pass
 
 # Наша адресна книга
 CONTACTS = AddressBook()
