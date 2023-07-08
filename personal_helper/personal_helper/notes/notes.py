@@ -12,6 +12,56 @@ def add_note(notes):
     return notes
 
 
+def edit_note(notes):
+     # Редагування нотатки
+    title = input('Enter the title of the note to edit: ')
+    note_found = False
+
+    for note in notes:
+        if note['title'] == title:
+            new_title = input('Enter a new title for the note: ')
+            new_content = input('Enter new note text: ')
+            note['title'] = new_title
+            note['content'] = new_content
+            note_found = True
+            break
+    
+    if note_found:
+        with open('notes.txt', 'w') as file:
+            for note in notes:
+                file.write(f"Title: {note['title']}\n")
+                file.write(f"Text: {note['content']}\n")
+                file.write('\n')
+        print('Note successfully edited and saved!')
+    else:
+        print('No note with this title was found.')
+
+
+def delete_note(notes):
+    # Видалення нотатки
+    title = input('Enter the title of the note to delete: ')
+    note_found = False
+
+    for note in notes:
+        if note['title'] == title:
+            notes.remove(note)
+            note_found = True
+            break
+
+    if note_found:
+        with open('notes.txt', 'w') as file:
+            for note in notes:
+                file.write(f"Title: {note['title']}\n")
+                file.write(f"Text: {note['content']}\n")
+                file.write('\n')
+        print('Note successfully deleted!')
+    else:
+        print('No note with this title was found.')
+        
+# def search_notes(notes):
+
+
+
 def main():
     notes = []
 
@@ -27,64 +77,16 @@ def main():
 
 
         if choice == '1':
-            # Додавання нотатки
             notes = add_note(notes)
-
-
         elif choice == '2':
-            # Редагування нотатки
-            title = input('Enter the title of the note to edit: ')
-            note_found = False
-
-            for note in notes:
-                if note['title'] == title:
-                    new_title = input('Enter a new title for the note: ')
-                    new_content = input('Enter new note text: ')
-                    note['title'] = new_title
-                    note['content'] = new_content
-                    note_found = True
-                    break
-            
-            if note_found:
-                with open('notes.txt', 'w') as file:
-                    for note in notes:
-                        file.write(f"Title: {note['title']}\n")
-                        file.write(f"Text: {note['content']}\n")
-                        file.write('\n')
-                print('Note successfully edited and saved!')
-            else:
-                print('No note with this title was found.')
-
-
+            edit_note(notes)
         elif choice == '3':
-            # Видалення нотатки
-            title = input('Enter the title of the note to delete: ')
-            note_found = False
-
-            for note in notes:
-                if note['title'] == title:
-                    notes.remove(note)
-                    note_found = True
-                    break
-
-            if note_found:
-                with open('notes.txt', 'w') as file:
-                    for note in notes:
-                        file.write(f"Title: {note['title']}\n")
-                        file.write(f"Text: {note['content']}\n")
-                        file.write('\n')
-                print('Note successfully deleted!')
-            else:
-                print('No note with this title was found.')
-             
-             
-       # elif choice == '4':
-
-
+            delete_note(notes)
+        
+        # elif choice == '4':
+                    
         elif choice == '5':
-            # Вихід з програми
-            break
-
+            break   
         else:
             print('Invalid input. Please try again.')
 
