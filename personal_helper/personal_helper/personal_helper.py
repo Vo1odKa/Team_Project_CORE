@@ -1,6 +1,6 @@
-# from address_book import address_book
-# from notes import notes
-# from sort import sort
+# from .address_book.address_book import main as address_book
+from .notes.notes import main as notes
+# from .sort.sort import main as sort
 
 def main():
     print("Hello, this is Personal Helper")
@@ -21,7 +21,7 @@ def main():
                 # address_book() 
             elif string == "2":
                 print("You went to Notes")
-                # notes()
+                notes()
             elif string == "3":
                 print("You went to Sorter")
                 # sort()
