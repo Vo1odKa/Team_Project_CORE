@@ -36,41 +36,27 @@ def sort_files(folder_path):
     music_extensions = ('.mp3', '.ogg', '.wav', '.amr')
     archive_extensions = ('.zip', '.tar', '.gz')
 
-    archive_folder = os.path.join(folder_path, 'archives')
-    os.makedirs(archive_folder, exist_ok=True)
-
     for root, dirs, files in os.walk(folder_path, topdown=True):
-        if 'archives' in dirs:
-            dirs.remove('archives')
-        if 'video' in dirs:
-            dirs.remove('video')
-        if 'audio' in dirs:
-            dirs.remove('audio')
-        if 'documents' in dirs:
-            dirs.remove('documents')
-        if 'images' in dirs:
-            dirs.remove('images')
-
         for file in files:
             file_extension = os.path.splitext(file)[1].lower()
             file_name = os.path.splitext(file)[0]
             normalized_name = normalize(file_name)
 
-            if file_extension in image_extensions:
-                destination_folder = os.path.join(root, 'images')
-            elif file_extension in video_extensions:
-                destination_folder = os.path.join(root, 'video')
-            elif file_extension in archive_extensions:
-                destination_folder = archive_folder
+            if file_extension in archive_extensions:
                 extract_path = os.path.join(root, file)
-                extract_file(extract_path, destination_folder)
+                extract_file(extract_path, folder_path)
                 continue
+
+            if file_extension in image_extensions:
+                destination_folder = os.path.join(folder_path, 'images')
+            elif file_extension in video_extensions:
+                destination_folder = os.path.join(folder_path, 'video')
             elif file_extension in document_extensions:
-                destination_folder = os.path.join(root, 'documents')
+                destination_folder = os.path.join(folder_path, 'documents')
             elif file_extension in music_extensions:
-                destination_folder = os.path.join(root, 'audio')
+                destination_folder = os.path.join(folder_path, 'audio')
             else:
-                destination_folder = os.path.join(root, 'unknown')
+                destination_folder = os.path.join(folder_path, 'unknown')
 
             os.makedirs(destination_folder, exist_ok=True)
 
@@ -100,7 +86,7 @@ def extract_file(file_path, destination_folder):
             with open(extract_path, 'wb') as extract_file:
                 extract_file.write(gz_ref.read())
 
-    os.remove(file_path) 
+    os.remove(file_path)
 
 
 def main():
@@ -116,7 +102,11 @@ def main():
         sys.exit(1)
 
     sort_files(folder_path)
-    print("File sorting completed successfully.")
+    print("First file sorting completed successfully.")
+
+    # Sort the files again after extraction
+    sort_files(folder_path)
+    print("Second file sorting completed successfully.")
 
 
 if __name__ == "__main__":
