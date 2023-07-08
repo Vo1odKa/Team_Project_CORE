@@ -100,7 +100,7 @@ def main():
         sys.exit(1)
 
     sort_files(folder_path)
-    print("First file sorting completed successfully.")
+    print("File sorting completed successfully.")
 
     sort_files(folder_path)
 
