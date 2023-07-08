@@ -6,6 +6,51 @@ The search is case-insensitive, and the matching notes' titles and contents are 
 If no matching notes are found, a "No notes found" message is displayed.
 """
 
+"""
+Але в notes.py потрібно буде додати: 
+
+        elif choice == '2':
+            # Пошук нотаток
+            search_notes()
+
+        elif choice == '3':
+            # Вихід з програми
+            break
+
+        else:
+            print('Invalid input. Please try again.')
+
+
+"""
+
+"""
+Або відразу notes.py потрібно буде додати: 
+
+        elif choice == '2':
+            # Пошук нотаток
+            search_query = input('Enter a search query: ')
+            search_results = search_notes(notes, search_query)
+            if search_results:
+                print('Search Results:')
+                for note in search_results:
+                    print(f"Title: {note['title']}")
+                    print(f"Text: {note['content']}")
+                    print('---')
+            else:
+                print('No matching notes found.')
+
+        elif choice == '3':
+            # Вихід з програми
+            break
+
+        else:
+            print('Invalid input. Please try again.')
+
+
+if __name__ == "__main__":
+    main()
+
+"""
 
 def search_notes():
     keyword = input('Enter a keyword to search: ')
