@@ -1,7 +1,6 @@
 import os
 import shutil
 import sys
-from pathlib import Path
 import zipfile
 import tarfile
 import gzip
@@ -105,11 +104,11 @@ def extract_file(file_path, destination_folder):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py folder_name")
-        sys.exit(1)
+    if len(sys.argv) == 2:
+        folder_name = sys.argv[1]
+    else:
+        folder_name = input("Enter the folder path to sort: ")
 
-    folder_name = sys.argv[1]
     folder_path = os.path.abspath(folder_name)
 
     if not os.path.isdir(folder_path):
@@ -117,3 +116,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     sort_files(folder_path)
+    print("File sorting completed successfully.")
