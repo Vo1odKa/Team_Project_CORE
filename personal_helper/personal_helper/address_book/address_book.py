@@ -15,30 +15,30 @@ class AddressBook(UserDict):
     def show_number(self, Name):
         return self.data[Name.name].Phones.phone
 
-    # Функція, що вовидить за раз N-ну кількість контактів із адресної книги (за замовчуванням виведе всі)
-    def iterator(self, N=None):
-        index = 0
-        N = len(self.data) if not N else N
-        while index < len(self.data):
-            yield list(self.data)[index: index + N]
-            index += N
+#    # Функція, що вовидить за раз N-ну кількість контактів із адресної книги (за замовчуванням виведе всі)
+#    def iterator(self, N=None):
+#        index = 0
+#        N = len(self.data) if not N else N
+#        while index < len(self.data):
+#            yield list(self.data)[index: index + N]
+#            index += N
 
-    # Функція, що виводить спісок всіх контактів, що містяться у адресній книзі
+    # Функція, що виводить спbсок всіх контактів, що містяться у адресній книзі
     def show_all(self):
         for name, info in self.data.items():
             yield f'{name} {info.Phones.phone} {info.Emails.email} {info.Birthday.birthday} {info.Address.address}'
 
-    # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
-    def find(self, piece_of_info):
-        res = []
-        for name, numbers in self.data.items():
-            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone):
-                res.append(name)
-        if res:
-            for name in res:
-                print(f'{name}: {self.data[name].Phones.phone}')
-        else:
-            print('No matches')
+#    # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
+#    def find(self, piece_of_info):
+#        res = []
+#        for name, numbers in self.data.items():
+#            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone):
+#                res.append(name)
+#        if res:
+#            for name in res:
+#                print(f'{name}: {self.data[name].Phones.phone}')
+#        else:
+#            print('No matches')
 
     # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
     def save_to_file(self, filename):
@@ -66,31 +66,31 @@ class Record:
         self.Phones.phone = list(set(self.Phones.phone) | set(Phone.phone))
         return "Done!"
 
-    # Функція, що змінює наявні номери телефону на нові
-    def change_phone(self, Phone):
-        self.Phones = Phone
-        return "Done!"
+#    # Функція, що змінює наявні номери телефону на нові
+#    def change_phone(self, Phone):
+#        self.Phones = Phone
+#       return "Done!"
 
-    # Функція, що видаляє наявний номер телефону
-    def delite_phone(self, Phone):
-        self.Phones.phone = list(set(self.Phones.phone) - set(Phone.phone))
-        return "Done!"
+#    # Функція, що видаляє наявний номер телефону
+#    def delite_phone(self, Phone):
+#        self.Phones.phone = list(set(self.Phones.phone) - set(Phone.phone))
+#        return "Done!"
 
-    # Функція, що розраховує кількість днів до наступного дня нородження контакта
-    def days_to_birthday(self):
-        if self.Birthday.birthday:
-            current_datetime = datetime.now()
-            birthday = datetime.strptime(self.Birthday.birthday, '%d/%m/%Y')
-            if int(current_datetime.month) > int(birthday.month) or (int(current_datetime.month) == int(birthday.month) and int(current_datetime.day) >= int(birthday.day)):
-                next_birthday = datetime(
-                    year=current_datetime.year+1, month=birthday.month, day=birthday.day)
-                return f"In {(next_birthday - current_datetime).days} days"
-            else:
-                next_birthday = datetime(
-                    year=current_datetime.year, month=birthday.month, day=birthday.day)
-                return f"In {(next_birthday - current_datetime).days} days"
-        else:
-            return "The birthsay date is unknown."
+#    # Функція, що розраховує кількість днів до наступного дня нородження контакта
+#    def days_to_birthday(self):
+#        if self.Birthday.birthday:
+#            current_datetime = datetime.now()
+#            birthday = datetime.strptime(self.Birthday.birthday, '%d/%m/%Y')
+#            if int(current_datetime.month) > int(birthday.month) or (int(current_datetime.month) == int(birthday.month) and int(current_datetime.day) >= int(birthday.day)):
+#                next_birthday = datetime(
+#                    year=current_datetime.year+1, month=birthday.month, day=birthday.day)
+#                return f"In {(next_birthday - current_datetime).days} days"
+#            else:
+#                next_birthday = datetime(
+#                    year=current_datetime.year, month=birthday.month, day=birthday.day)
+#                return f"In {(next_birthday - current_datetime).days} days"
+#        else:
+#            return "The birthsay date is unknown."
 
 
 # Після отримання введеної користувачем команди та відокремлення від неї слова-ключа, отримана інформація сортується за критеріями
@@ -172,13 +172,14 @@ CONTACTS = AddressBook()
 
 
 # Функція привітання
-def hello():
-    return 'How can I help you?'
+#def hello():
+#    return 'How can I help you?'
 
 
 # Фунція виходу
 def close():
-    return "Good bye!"
+    CONTACTS.save_to_file('address_book.txt')
+    return "The address book is saved to a file 'address_book.txt'. See You later!"
 
 
 # Уникання будь-яких помилок під час роботи програми
@@ -207,11 +208,11 @@ def main():
     while bot_status:
         # Введення команди з консолі
         command = input('Enter the command: ').lower()
-        # Привітання з користувачем (сюди можна вставити правила вводу всіх можливих функцій)
-        if command == 'hello':
-            print(hello())
+#        # Привітання з користувачем (сюди можна вставити правила вводу всіх можливих функцій)
+#        if command == 'hello':
+#            print(hello())
         # Додавання нового контакту
-        elif 'add' in command:
+        if 'add' in command:
             command = command.removeprefix('add ')
             if Name(command).name in CONTACTS.data:
                 print(CONTACTS.data[Name(command).name].add_phone(
@@ -220,16 +221,14 @@ def main():
             else:
                 print(CONTACTS.add_record(
                     Record(Name(command), Phone(command), Birthday(command), Email(command), Address(command))))
-        # Зміна номеру телефону у вже існуючому контакті
-        elif "change" in command:
-            command = command.removeprefix('change ')
-            print(CONTACTS.data[Name(command).name].change_phone(
-                Phone(command)))
-        # Видалення номеру телефону з вже існуючого контакту
-        elif "delite" in command:
-            command = command.removeprefix('delite ')
-            print(CONTACTS.data[Name(command).name].delite_phone(
-                Phone(command)))
+#        # Зміна номеру телефону у вже існуючому контакті
+#        elif "change" in command:
+#            command = command.removeprefix('change ')
+#            print(CONTACTS.data[Name(command).name].change_phone(Phone(command)))
+#        # Видалення номеру телефону з вже існуючого контакту
+#        elif "delite" in command:
+#            command = command.removeprefix('delite ')
+#            print(CONTACTS.data[Name(command).name].delite_phone(Phone(command)))
         # Вивід всіх існуючих номерів телефону певного контакту (вказувати ім'я після пробілу)
         elif "phone" in command:
             command = command.removeprefix("phone ")
@@ -251,7 +250,6 @@ def main():
 #            CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
         elif command in ("good bye", "bye", "close", "exit", "end"):
-            CONTACTS.save_to_file('address_book.txt')
             print(close())
             bot_status = False
         # Якщо користувач некоректно ввів команду (тут можна реалізувати додаткове завдання з підказкою можливих команд)
@@ -268,6 +266,7 @@ Available commands:
     emails - can be several, enter with a space
     birthday - date in format dd/mm/yyyy (only the first entered date of the required format is accepted)
     address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic ave/3-B)
+"phone [name]*" - shows phone numbers of a particular contact
 "show all" - show you full list of contacts in the address book
 "good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
 
