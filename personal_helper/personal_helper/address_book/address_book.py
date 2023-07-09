@@ -14,8 +14,10 @@ Available commands:
     birthday - date in format dd/mm/yyyy (must be only one)
     address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
 "phone [name]*" - shows phone numbers of a particular contact
+"find [any piece of information]*" - search for matches among existing contacts
+"when birthday [name]*" - calculates the number of days until the contact's next birthday
+"days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
 "show all" - show you full list of contacts in the address book
-"find [any piece of information]" - search for matches among existing contacts
 "good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
 
 * - mandatory field
@@ -281,8 +283,8 @@ def main():
         elif "when birthday" in command:
             command = command.removeprefix("when birthday ")
             print(CONTACTS.data[Name(command).name].days_to_birthday())
-        elif "days until birthday " in command:
-            command = command.removeprefix("days until birthday ")
+        elif "days until birthday: " in command:
+            command = command.removeprefix("days until birthday: ")
             print(CONTACTS.birthday_after_n_days(command))
         # Пошук контакту за певною послідовністю літер або чисел
         elif "find" in command:
