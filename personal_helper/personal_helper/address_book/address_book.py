@@ -3,7 +3,7 @@ from datetime import datetime
 import pickle
 import re
 
-rules = '''
+tutorial = '''
 Hello! Welcome to Address Book.
 
 Available commands:
@@ -15,6 +15,7 @@ Available commands:
     address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
 "phone [name]*" - shows phone numbers of a particular contact
 "show all" - show you full list of contacts in the address book
+"find [any piece of information]" - search for matches among existing contacts
 "good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
 
 * - mandatory field
@@ -45,17 +46,17 @@ class AddressBook(UserDict):
         for name, info in self.data.items():
             yield f'{name}: {info.Phones.phone} {info.Emails.email} {info.Birthday.birthday} {info.Address.address}'
 
-#    # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
-#    def find(self, piece_of_info):
-#        res = []
-#        for name, numbers in self.data.items():
-#            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone) in str(numbers.Emails.email) in str(numbers.Birthday.birthday) in str(numbers.Address.address):
-#                res.append(name)
-#        if res:
-#            for name in res:
-#                print(f'{name}: {self.data[name].Phones.phone} {self.data[name].Emails.email} {self.data[name].Birthday.birthday} {self.data[name].Address.address}')
-#        else:
-#            print('No matches')
+    # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
+    def find(self, piece_of_info):
+        res = []
+        for name, numbers in self.data.items():
+            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone) in str(numbers.Emails.email) in str(numbers.Birthday.birthday) in str(numbers.Address.address):
+                res.append(name)
+        if res:
+            for name in res:
+                print(f'{name}: {self.data[name].Phones.phone} {self.data[name].Emails.email} {self.data[name].Birthday.birthday} {self.data[name].Address.address}')
+        else:
+            print('No matches')
 
     # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
     def save_to_file(self, filename):
@@ -227,7 +228,7 @@ def input_error(func):
 # Головна функція, куди додаємо весь функціонал
 @ input_error
 def main():
-    print(rules)
+    print(tutorial)
     bot_status = True
     # Умава, що забеспечує безкінечний цикл запиту, поки не буде виходу
     while bot_status:
@@ -270,9 +271,9 @@ def main():
 #            command = command.removeprefix("birthday ")
 #            print(CONTACTS.data[Name(command).name].days_to_birthday())
 #        # Пошук контакту за певною послідовністю літер або чисел
-#        elif "find" in command:
-#            command = command.removeprefix('find ')
-#            CONTACTS.find(command)
+        elif "find" in command:
+            command = command.removeprefix('find ')
+            CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
         elif command in ("good bye", "bye", "close", "exit", "end"):
             print(close())
