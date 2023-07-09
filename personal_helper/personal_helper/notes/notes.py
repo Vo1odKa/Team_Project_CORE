@@ -28,7 +28,7 @@ def edit_note(notes):
         if note['title'] == title:
             new_title = input('Enter a new title for the note: ')
             new_content = input('Enter new note text: ')
-            new_tags = input('Enter new tags for the note (comma-separated): ').split(',')
+            new_tags = input('Enter new tags for the note (comma-separated, press Enter to skip): ')
             
             if new_tags:
                 new_tags = [tag.strip() for tag in new_tags.split(',')]
@@ -74,9 +74,24 @@ def delete_note(notes):
         print('Note successfully deleted!')
     else:
         print('No note with this title was found.')
-        
-# def search_notes(notes):
 
+
+def search_notes(notes):
+    # Пошук нотатків
+    keyword = input('Enter a keyword to search: ')
+    if found_notes := [
+        note
+        for note in notes
+        if keyword.lower() in note['title'].lower()
+        or keyword.lower() in note['content'].lower()
+    ]:
+        print('Found notes:')
+        for note in found_notes:
+            print(f"Title: {note['title']}")
+            print(f"Text: {note['content']}")
+            print()
+    else:
+        print('No notes found.')
 
 
 def main():
@@ -99,9 +114,8 @@ def main():
             edit_note(notes)
         elif choice == '3':
             delete_note(notes)
-        
-        # elif choice == '4':
-                    
+        elif choice == '4':
+            search_notes(notes) 
         elif choice == '5':
             break   
         else:
