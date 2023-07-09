@@ -11,7 +11,6 @@ def add_note(notes):
     print('Note successfully added and saved!')
     return notes
 
-
 def edit_note(notes):
     # Редагування нотатки
     title = input('Enter the title of the note to edit: ')
@@ -36,7 +35,6 @@ def edit_note(notes):
     else:
         print('No note with this title was found.')
 
-
 def delete_note(notes):
     # Видалення нотатки
     title = input('Enter the title of the note to delete: ')
@@ -58,7 +56,6 @@ def delete_note(notes):
     else:
         print('No note with this title was found.')
 
-
 def search_notes(notes):
     # Пошук нотатків
     keyword = input('Enter a keyword to search: ')
@@ -76,7 +73,6 @@ def search_notes(notes):
     else:
         print('No notes found.')
 
-
 def main():
     notes = []
 
@@ -85,7 +81,7 @@ def main():
         print('1. Add a note')
         print('2. Edit note')
         print('3. Delete note')
-        print('4. Search notes')
+        print('4. Search notes')  
         print('5. Go out')
 
         choice = input('Enter the option number: ')
@@ -100,9 +96,9 @@ def main():
             search_notes(notes)           
         elif choice == '5':
             break
+
         else:
             print('Invalid input. Please try again.')
-
 
 if __name__ == "__main__":
     main()
