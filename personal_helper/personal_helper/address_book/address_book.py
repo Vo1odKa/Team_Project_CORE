@@ -42,14 +42,20 @@ class AddressBook(UserDict):
 
     # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
     def save_to_file(self, filename):
-        with open(filename, "wb") as file:
-            pickle.dump(self, file)
+        with open(filename, "w+") as file:
+            file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format("Name", "Phones", "Emails", "Birthday", "Address"))
+            for name, info in self.data.items():
+                phones = ', '.join(info.Phones.phone)
+                emails = ', '.join(info.Emails.email)
+                file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format(
+                    name, phones, emails, info.Birthday.birthday, info.Address.address))
 
-    # Функція, що дозволяє завантажити адресну книгу з файлу на ПК
-    def read_from_file(self, filename):
-        with open(filename, "rb") as file:
-            content = pickle.load(file)
-        return content
+
+#    # Функція, що дозволяє завантажити адресну книгу з файлу на ПК
+#    def read_from_file(self, filename):
+#        with open(filename, "rb") as file:
+#            content = pickle.load(file)
+#        return content
 
 
 # Об'єкти класу "контакт", що міститеме всю інформацію про нього
@@ -101,11 +107,11 @@ class Field:
         # Відокремлюються всі номери
         self.phone = re.findall('\d+', data)
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
-        self.birthday = re.findall('\d{2}\/\d{2}\/\d{4}', data)[0]
+        self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
         # Відокремлює всі адреси електронної пошти
         self.email = re.findall('[A-Za-z][A-Za-z0-9_.]+@[A-Za-z]+\.[A-Za-z]{2,}', data)
         # Відокремлює адресу контакту
-        self.address = ''.join(re.findall('\/[a-zA-Z-\s]+\/[a-zA-Z0-9-\s]+\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*', data))
+        self.address = ''.join(re.findall('\/[a-zA-Z-.\s]+\/[a-zA-Z0-9-.\s]+\/?[a-zA-Z0-9-.\s]*\/?[a-zA-Z0-9-.\s]*\/?[a-zA-Z0-9-.\s]*', data))
 
 
 # Об'єкти класу "ім'я контакту"
@@ -190,8 +196,8 @@ def input_error(func):
             try:
                 result = func()
                 flag = False
-            except IndexError:
-                print('Enter the name and numbers separated by a space.')
+#            except IndexError:
+#                print('Enter the name and numbers separated by a space.')
             except ValueError:
                 print('I have no idea how you did it, try again.')
             except KeyError:
@@ -264,8 +270,8 @@ Available commands:
     name - no more than three words
     phones - can be several (each must contain 10 to 12 digits), enter with a space
     emails - can be several, enter with a space
-    birthday - date in format dd/mm/yyyy (only the first entered date of the required format is accepted)
-    address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic ave/3-B)
+    birthday - date in format dd/mm/yyyy (must be only one)
+    address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
 "phone [name]*" - shows phone numbers of a particular contact
 "show all" - show you full list of contacts in the address book
 "good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
