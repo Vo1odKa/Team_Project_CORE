@@ -26,7 +26,7 @@ class AddressBook(UserDict):
     # Функція, що виводить спісок всіх контактів, що містяться у адресній книзі
     def show_all(self):
         for name, numbers in self.data.items():
-            yield f'{name}: {numbers.Phones.phone}'
+            yield f'{name}: {numbers.Phones.phone} {numbers.Emailes.email} {numbers.Birthday.birthday} {numbers.Address.address}'
 
     # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
     def find(self, piece_of_info):
@@ -54,10 +54,12 @@ class AddressBook(UserDict):
 
 # Об'єкти класу "контакт", що міститеме всю інформацію про нього
 class Record:
-    def __init__(self, Name, Phones=None, Birthday=None):
+    def __init__(self, Name, Phones=None, Birthday=None, Emailes=None, Address=None):
         self.Name = Name
         self.Phones = Phones
         self.Birthday = Birthday
+        self.Email = Emailes
+        self.Address = Address
 
     # функція, що додає номер телефону до контакту
     def add_phone(self, Phone):
@@ -94,16 +96,16 @@ class Record:
 # Після отримання введеної користувачем команди та відокремлення від неї слова-ключа, отримана інформація сортується за критеріями
 class Field:
     def __init__(self, data):
-        # Вілокремлюються всі слова
+        # Відокремлюються всі слова та обєднує їх у "ім'я" контакту
         self.name = ' '.join(re.findall('[a-z]+', data))
         # Відокремлюються всі номери
         self.phone = re.findall('\d+', data)
-        # Відокремлення дати, що має формат дд/мм/рррр (маєця на увазі, що вона має бути введена тільки одна)
+        # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
         self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
-        # Відокремлює всі електронні поштові адреси
+        # Відокремлює всі адреси електронної пошти
         self.email = re.findall('[a-zA-Z0-9_.]+@[a-z]+.[a-z]+', data)
-
-        self.address = ' '.join(re.findall('[a-z]+', data))
+        # Відокремлює адресу контакту
+        self.address = ''.join(re.findall('\/[a-zA-Z-\s]+\/[a-zA-Z0-9-\s]+\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*', data))
 
 
 # Об'єкти класу "ім'я контакту"
@@ -162,7 +164,8 @@ class Email(Field):
 
 # Обєкти класу "адреса"
 class Address(Field):
-    pass
+    def __init__(self, address):
+        super().__init__(address)
 
 # Наша адресна книга
 CONTACTS = AddressBook()
