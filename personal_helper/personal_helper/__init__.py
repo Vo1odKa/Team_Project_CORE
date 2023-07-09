@@ -1,1 +1,1 @@
-from personal_helper.personal_helper import personal_helper
+from personal_helper.personal_helper.personal_helper import main
