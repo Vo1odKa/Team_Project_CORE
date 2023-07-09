@@ -26,9 +26,12 @@ def search_notes(notes):
 
 
 if __name__ == "__main__":
-    """
-    Here should be your code that creates a list of notes and 
-    passes it to the search_notes() function
-    '"""
-   pass
+    
+    notes = [
+        {'title': 'Note 1', 'content': 'This is the content of note 1.'},
+        {'title': 'Note 2', 'content': 'This is the content of note 2.'},
+        {'title': 'Note 3', 'content': 'This is the content of note 3.'}
+    ]
+
+    search_notes(notes)
 
