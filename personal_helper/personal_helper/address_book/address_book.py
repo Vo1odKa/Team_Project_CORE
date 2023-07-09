@@ -197,8 +197,8 @@ def input_error(func):
             try:
                 result = func()
                 flag = False
-#            except IndexError:
-#                print('Enter the name and numbers separated by a space.')
+            except IndexError:
+                print('Enter the name and numbers separated by a space.')
             except ValueError:
                 print('I have no idea how you did it, try again.')
             except KeyError:
