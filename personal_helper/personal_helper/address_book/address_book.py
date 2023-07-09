@@ -268,6 +268,7 @@ Available commands:
     birthday - date in format dd/mm/yyyy (only the first entered date of the required format is accepted)
     address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic ave/3-B)
 "show all" - show you full list of contacts in the address book
+"good bye", "bye", "close", "exit" or "end" - exit the address book
 
 * - mandatory field
 ** - optional field
