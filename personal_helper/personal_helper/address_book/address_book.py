@@ -26,7 +26,7 @@ class AddressBook(UserDict):
     # Функція, що виводить спісок всіх контактів, що містяться у адресній книзі
     def show_all(self):
         for name, info in self.data.items():
-            yield f'{name}: {info.Phones.phone} {info.Emailes.email} {info.Birthday.birthday} {info.Address.address}'
+            yield f'{name} {info.Phones.phone} {info.Emails.email} {info.Birthday.birthday} {info.Address.address}'
 
     # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
     def find(self, piece_of_info):
@@ -54,11 +54,11 @@ class AddressBook(UserDict):
 
 # Об'єкти класу "контакт", що міститеме всю інформацію про нього
 class Record:
-    def __init__(self, Name, Phones=None, Birthday=None, Emailes=None, Address=None):
+    def __init__(self, Name, Phones=None, Birthday=None, Emails=None, Address=None):
         self.Name = Name
         self.Phones = Phones
         self.Birthday = Birthday
-        self.Emailes = Emailes
+        self.Emails = Emails
         self.Address = Address
 
     # функція, що додає номер телефону до контакту
