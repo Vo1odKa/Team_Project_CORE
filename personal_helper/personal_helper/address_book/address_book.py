@@ -251,6 +251,7 @@ def main():
             CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
         elif command in ("good bye", "bye", "close", "exit", "end"):
+            CONTACTS.save_to_file('address_book.txt')
             print(close())
             bot_status = False
         # Якщо користувач некоректно ввів команду (тут можна реалізувати додаткове завдання з підказкою можливих команд)
@@ -268,7 +269,7 @@ Available commands:
     birthday - date in format dd/mm/yyyy (only the first entered date of the required format is accepted)
     address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic ave/3-B)
 "show all" - show you full list of contacts in the address book
-"good bye", "bye", "close", "exit" or "end" - exit the address book
+"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
 
 * - mandatory field
 ** - optional field
