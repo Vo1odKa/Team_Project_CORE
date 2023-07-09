@@ -18,9 +18,8 @@ def add_note(notes):
     print('Note successfully added and saved!')
     return notes
 
-
 def edit_note(notes):
-     # Редагування нотатки
+    # Редагування нотатки
     title = input('Enter the title of the note to edit: ')
     note_found = False
 
@@ -38,7 +37,7 @@ def edit_note(notes):
             note['tags'] = new_tags
             note_found = True
             break
-    
+
     if note_found:
         with open('notes.txt', 'w') as file:
             for note in notes:
@@ -50,7 +49,6 @@ def edit_note(notes):
         print('Note successfully edited and saved!')
     else:
         print('No note with this title was found.')
-
 
 def delete_note(notes):
     # Видалення нотатки
@@ -75,7 +73,6 @@ def delete_note(notes):
     else:
         print('No note with this title was found.')
 
-
 def search_notes(notes):
     # Пошук нотатків
     keyword = input('Enter a keyword to search: ')
@@ -93,7 +90,6 @@ def search_notes(notes):
     else:
         print('No notes found.')
 
-
 def main():
     notes = []
 
@@ -107,7 +103,6 @@ def main():
 
         choice = input('Enter the option number: ')
 
-
         if choice == '1':
             notes = add_note(notes)
         elif choice == '2':
@@ -117,10 +112,9 @@ def main():
         elif choice == '4':
             search_notes(notes) 
         elif choice == '5':
-            break   
+            break
         else:
             print('Invalid input. Please try again.')
-
 
 if __name__ == "__main__":
     main()
