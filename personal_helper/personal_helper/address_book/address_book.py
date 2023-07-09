@@ -101,11 +101,11 @@ class Field:
         # Відокремлюються всі номери
         self.phone = re.findall('\d+', data)
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
-        self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
+        self.birthday = re.findall('\d{2}\/\d{2}\/\d{4}', data)[0]
         # Відокремлює всі адреси електронної пошти
         self.email = re.findall('[A-Za-z][A-Za-z0-9_.]+@[A-Za-z]+\.[A-Za-z]{2,}', data)
         # Відокремлює адресу контакту
-        self.address = ''.join(re.findall('\/[a-zA-Z-\s]+\/[a-zA-Z0-9-\s]+\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*', data))
+        self.address = ''.join(re.findall('\/[a-zA-Z-\s]+\/[a-zA-Z0-9-\s]+\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*', data))
 
 
 # Об'єкти класу "ім'я контакту"
@@ -257,6 +257,22 @@ def main():
         else:
             print("Enter correct command, please.")
 
+rules = '''
+Hello! Welcome to Address Book.
+
+Available commands:
+"add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
+    name - no more than three words
+    phones - can be several (each must contain 10 to 12 digits), enter with a space
+    emails - can be several, enter with a space
+    birthday - date in format dd/mm/yyyy (only the first entered date of the required format is accepted)
+    address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic ave/3-B)
+"show all" - show you full list of contacts in the address book
+
+* - mandatory field
+** - optional field
+'''
 
 if __name__ == '__main__':
+    print(rules)
     main()
