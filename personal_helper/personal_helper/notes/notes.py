@@ -2,11 +2,18 @@ def add_note(notes):
     # Додавання та збереження нотатки
     title = input('Enter a title for the note: ')
     content = input('Enter the note text: ')
-    note = {'title': title, 'content': content}
+    tags = input('Enter tags for the note (comma-separated, press Enter to skip): ')
+   
+    if tags:
+        tags = [tag.strip() for tag in tags.split(',')]
+        
+    note = {'title': title, 'content': content, 'tags': tags}
     notes.append(note)
     with open('notes.txt', 'a') as file:
         file.write(f"Title: {note['title']}\n")
         file.write(f"Text: {note['content']}\n")
+        if tags:
+            file.write(f"Tags: {', '.join(note['tags'])}\n")
         file.write('\n')
     print('Note successfully added and saved!')
     return notes
@@ -21,8 +28,14 @@ def edit_note(notes):
         if note['title'] == title:
             new_title = input('Enter a new title for the note: ')
             new_content = input('Enter new note text: ')
+            new_tags = input('Enter new tags for the note (comma-separated): ').split(',')
+            
+            if new_tags:
+                new_tags = [tag.strip() for tag in new_tags.split(',')]
+            
             note['title'] = new_title
             note['content'] = new_content
+            note['tags'] = new_tags
             note_found = True
             break
     
@@ -31,6 +44,8 @@ def edit_note(notes):
             for note in notes:
                 file.write(f"Title: {note['title']}\n")
                 file.write(f"Text: {note['content']}\n")
+                if note['tags']:
+                    file.write(f"Tags: {', '.join(note['tags'])}\n")
                 file.write('\n')
         print('Note successfully edited and saved!')
     else:
@@ -53,6 +68,8 @@ def delete_note(notes):
             for note in notes:
                 file.write(f"Title: {note['title']}\n")
                 file.write(f"Text: {note['content']}\n")
+                if note['tags']:
+                    file.write(f"Tags: {', '.join(note['tags'])}\n")
                 file.write('\n')
         print('Note successfully deleted!')
     else:
