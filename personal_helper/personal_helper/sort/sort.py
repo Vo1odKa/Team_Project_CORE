@@ -101,7 +101,7 @@ def main():
 
         sort_files(folder_path)
     elif choice == '2':
-        print('sort rejected')
+        print('exit sorting')
         sys.exit(0)
     else:
         print("Invalid choice.")
