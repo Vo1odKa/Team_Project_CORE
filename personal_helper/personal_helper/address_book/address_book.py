@@ -143,7 +143,7 @@ class Phone(Field):
 # Обєкти класу "день народження"
 class Birthday(Field):
     def __init__(self, birthday):
-        self.__birthday = None
+        self.__birthday = ''
         super().__init__(birthday)
 
     @property
@@ -154,6 +154,7 @@ class Birthday(Field):
     @birthday.setter
     def birthday(self, birthday):
         try:
+            birthday = birthday[:10]
             test = datetime.strptime(birthday, '%d/%m/%Y')
             current_datetime = datetime.now()
             if (current_datetime - test).days > 0:
