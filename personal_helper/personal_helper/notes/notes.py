@@ -58,7 +58,23 @@ def delete_note(notes):
     else:
         print('No note with this title was found.')
 
-# def search_notes(notes): - Це має бути першим
+
+def search_notes(notes):
+    # Пошук нотатків
+    keyword = input('Enter a keyword to search: ')
+    if found_notes := [
+        note
+        for note in notes
+        if keyword.lower() in note['title'].lower()
+        or keyword.lower() in note['content'].lower()
+    ]:
+        print('Found notes:')
+        for note in found_notes:
+            print(f"Title: {note['title']}")
+            print(f"Text: {note['content']}")
+            print()
+    else:
+        print('No notes found.')
 
 
 def main():
@@ -80,10 +96,8 @@ def main():
             edit_note(notes)
         elif choice == '3':
             delete_note(notes)
-
-        #elif choice == '4':
-            #search_notes(notes)
-            
+        elif choice == '4':
+            search_notes(notes)           
         elif choice == '5':
             break
         else:
