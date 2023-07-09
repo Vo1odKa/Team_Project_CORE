@@ -1,5 +1,8 @@
-def add_note(notes):
-    # Додавання та збереження нотатки
+notes = []
+
+
+def add_note():
+    # Додавання нотатки
     title = input('Enter a title for the note: ')
     content = input('Enter the note text: ')
     tags = input('Enter tags for the note (comma-separated, press Enter to skip): ')
@@ -9,16 +12,11 @@ def add_note(notes):
         
     note = {'title': title, 'content': content, 'tags': tags}
     notes.append(note)
-    with open('notes.txt', 'a') as file:
-        file.write(f"Title: {note['title']}\n")
-        file.write(f"Text: {note['content']}\n")
-        if tags:
-            file.write(f"Tags: {', '.join(note['tags'])}\n")
-        file.write('\n')
+    save_notes()
     print('Note successfully added and saved!')
-    return notes
+    
 
-def edit_note(notes):
+def edit_note():
     # Редагування нотатки
     title = input('Enter the title of the note to edit: ')
     note_found = False
@@ -39,18 +37,12 @@ def edit_note(notes):
             break
 
     if note_found:
-        with open('notes.txt', 'w') as file:
-            for note in notes:
-                file.write(f"Title: {note['title']}\n")
-                file.write(f"Text: {note['content']}\n")
-                if note['tags']:
-                    file.write(f"Tags: {', '.join(note['tags'])}\n")
-                file.write('\n')
+        save_notes()
         print('Note successfully edited and saved!')
     else:
         print('No note with this title was found.')
 
-def delete_note(notes):
+def delete_note():
     # Видалення нотатки
     title = input('Enter the title of the note to delete: ')
     note_found = False
@@ -62,18 +54,12 @@ def delete_note(notes):
             break
 
     if note_found:
-        with open('notes.txt', 'w') as file:
-            for note in notes:
-                file.write(f"Title: {note['title']}\n")
-                file.write(f"Text: {note['content']}\n")
-                if note['tags']:
-                    file.write(f"Tags: {', '.join(note['tags'])}\n")
-                file.write('\n')
+        save_notes()
         print('Note successfully deleted!')
     else:
         print('No note with this title was found.')
 
-def search_notes(notes):
+def search_notes():
     # Пошук нотатків
     keyword = input('Enter a keyword to search: ')
     if found_notes := [
@@ -90,8 +76,46 @@ def search_notes(notes):
     else:
         print('No notes found.')
 
+def save_notes():
+    # Збереження нотаток у файл
+    with open('notes.txt', 'w') as file:
+        for note in notes:
+            file.write(f"Title: {note['title']}\n")
+            file.write(f"Text: {note['content']}\n")
+            if note['tags']:
+                file.write(f"Tags: {', '.join(note['tags'])}\n")
+            file.write('\n')
+
+
+def load_notes():
+    # Завантаження нотаток з файлу
+    notes.clear()
+    try:
+        with open('notes.txt', 'r') as file:
+            lines = file.readlines()
+            title = ''
+            content = ''
+            tags = []
+
+            for line in lines:
+                if line.startswith('Title: '):
+                    title = line[7:].strip()
+                elif line.startswith('Text: '):
+                    content = line[6:].strip()
+                elif line.startswith('Tags: '):
+                    tags = [tag.strip() for tag in line[6:].split(',')]
+                elif line == '\n':
+                    note = {'title': title, 'content': content, 'tags': tags}
+                    notes.append(note)
+                    title = ''
+                    content = ''
+                    tags = []
+    except FileNotFoundError:
+        pass
+
+
 def main():
-    notes = []
+    load_notes()
 
     while True:
         print('Menu:')
@@ -104,13 +128,13 @@ def main():
         choice = input('Enter the option number: ')
 
         if choice == '1':
-            notes = add_note(notes)
+            notes = add_note()
         elif choice == '2':
-            edit_note(notes)
+            edit_note()
         elif choice == '3':
-            delete_note(notes)
+            delete_note()
         elif choice == '4':
-            search_notes(notes) 
+            search_notes() 
         elif choice == '5':
             break
         else:
