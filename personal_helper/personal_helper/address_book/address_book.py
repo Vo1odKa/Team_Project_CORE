@@ -97,7 +97,7 @@ class Record:
 class Field:
     def __init__(self, data):
         # Відокремлюються всі слова та обєднує їх у "ім'я" контакту
-        self.name = ' '.join(re.findall('[a-z]+', data))
+        self.name = re.findall('[a-z]+\s?[a-z]+\s?[a-z]+', data)[0]
         # Відокремлюються всі номери
         self.phone = re.findall('\d+', data)
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
