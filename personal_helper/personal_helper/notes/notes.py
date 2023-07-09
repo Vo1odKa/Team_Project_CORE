@@ -74,6 +74,39 @@ def search_notes():
     else:
         print('No notes found.')
 
+
+def sort_notes_by_tag():
+    # Сортування нотаток за тегами
+    tags = set()
+    for note in notes:
+        if note['tags']:
+            tags.update(note['tags'])
+    tags_list = list(tags)
+
+    print('Available tags:')
+    for i, tag in enumerate(tags_list):
+        print(f'{i + 1}. {tag}')
+
+    choice = input('Enter the tag number to sort notes: ')
+    if choice.isdigit() and int(choice) in range(1, len(tags_list) + 1):
+        tag = tags_list[int(choice) - 1]
+        if sorted_notes := [
+            note
+            for note in notes
+            if note['tags']
+            and tag.lower() in [t.lower() for t in note['tags']]
+        ]:
+            print('Sorted notes:')
+            for note in sorted_notes:
+                print(f"Title: {note['title']}")
+                print(f"Text: {note['content']}")
+                print(f"Tags: {', '.join(note['tags'])}")
+                print()
+        else:
+            print('No notes found with this tag.')
+    else:
+        print('Invalid tag number.')
+
 def save_notes():
     # Збереження нотаток у файл
     with open('notes.txt', 'w') as file:
@@ -119,8 +152,9 @@ def main():
         print('1. Add a note')
         print('2. Edit note')
         print('3. Delete note')
-        print('4. Search notes')  
-        print('5. Go out')
+        print('4. Search notes')
+        print('5. Sort notes by tags')
+        print('6. Go out')
 
         choice = input('Enter the option number: ')
 
@@ -131,8 +165,10 @@ def main():
         elif choice == '3':
             delete_note()
         elif choice == '4':
-            search_notes() 
+            search_notes()
         elif choice == '5':
+            sort_notes_by_tag()
+        elif choice == '6':
             break
         else:
             print('Invalid input. Please try again.')
