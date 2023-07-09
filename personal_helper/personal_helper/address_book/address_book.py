@@ -25,8 +25,8 @@ class AddressBook(UserDict):
 
     # Функція, що виводить спісок всіх контактів, що містяться у адресній книзі
     def show_all(self):
-        for name, numbers in self.data.items():
-            yield f'{name}: {numbers.Phones.phone} {numbers.Emailes.email} {numbers.Birthday.birthday} {numbers.Address.address}'
+        for name, info in self.data.items():
+            yield f'{name}: {info.Phones.phone} {info.Emailes.email} {info.Birthday.birthday} {info.Address.address}'
 
     # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
     def find(self, piece_of_info):
@@ -58,7 +58,7 @@ class Record:
         self.Name = Name
         self.Phones = Phones
         self.Birthday = Birthday
-        self.Email = Emailes
+        self.Emailes = Emailes
         self.Address = Address
 
     # функція, що додає номер телефону до контакту
@@ -219,7 +219,7 @@ def main():
             # Додавання нової інформації до вже існуючого контакту
             else:
                 print(CONTACTS.add_record(
-                    Record(Name(command), Phone(command), Birthday(command))))
+                    Record(Name(command), Phone(command), Birthday(command), Email(command), Address(command))))
         # Зміна номеру телефону у вже існуючому контакті
         elif "change" in command:
             command = command.removeprefix('change ')
@@ -250,7 +250,7 @@ def main():
             command = command.removeprefix('find ')
             CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
-        elif command in ("good bye", "bye", "close", "exit"):
+        elif command in ("good bye", "bye", "close", "exit", "end"):
             print(close())
             bot_status = False
         # Якщо користувач некоректно ввів команду (тут можна реалізувати додаткове завдання з підказкою можливих команд)
