@@ -3,6 +3,23 @@ from datetime import datetime
 import pickle
 import re
 
+rules = '''
+Hello! Welcome to Address Book.
+
+Available commands:
+"add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
+    name - no more than three words
+    phones - can be several (each must contain 10 to 12 digits), enter with a space
+    emails - can be several, enter with a space
+    birthday - date in format dd/mm/yyyy (must be only one)
+    address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
+"phone [name]*" - shows phone numbers of a particular contact
+"show all" - show you full list of contacts in the address book
+"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
+
+* - mandatory field
+** - optional field
+'''
 
 # Об'єкти класу "адресна книга"
 class AddressBook(UserDict):
@@ -26,17 +43,17 @@ class AddressBook(UserDict):
     # Функція, що виводить спbсок всіх контактів, що містяться у адресній книзі
     def show_all(self):
         for name, info in self.data.items():
-            yield f'{name} {info.Phones.phone} {info.Emails.email} {info.Birthday.birthday} {info.Address.address}'
+            yield f'{name}: {info.Phones.phone} {info.Emails.email} {info.Birthday.birthday} {info.Address.address}'
 
 #    # Функція, що шукає контакти, які містять певну послідовність літер в умені контакту, або чисел у його телефонних номерах
 #    def find(self, piece_of_info):
 #        res = []
 #        for name, numbers in self.data.items():
-#            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone):
+#            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone) in str(numbers.Emails.email) in str(numbers.Birthday.birthday) in str(numbers.Address.address):
 #                res.append(name)
 #        if res:
 #            for name in res:
-#                print(f'{name}: {self.data[name].Phones.phone}')
+#                print(f'{name}: {self.data[name].Phones.phone} {self.data[name].Emails.email} {self.data[name].Birthday.birthday} {self.data[name].Address.address}')
 #        else:
 #            print('No matches')
 
@@ -210,6 +227,7 @@ def input_error(func):
 # Головна функція, куди додаємо весь функціонал
 @ input_error
 def main():
+    print(rules)
     bot_status = True
     # Умава, що забеспечує безкінечний цикл запиту, поки не буде виходу
     while bot_status:
@@ -263,24 +281,6 @@ def main():
         else:
             print("Enter correct command, please.")
 
-rules = '''
-Hello! Welcome to Address Book.
-
-Available commands:
-"add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
-    name - no more than three words
-    phones - can be several (each must contain 10 to 12 digits), enter with a space
-    emails - can be several, enter with a space
-    birthday - date in format dd/mm/yyyy (must be only one)
-    address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
-"phone [name]*" - shows phone numbers of a particular contact
-"show all" - show you full list of contacts in the address book
-"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
-
-* - mandatory field
-** - optional field
-'''
 
 if __name__ == '__main__':
-    print(rules)
     main()
