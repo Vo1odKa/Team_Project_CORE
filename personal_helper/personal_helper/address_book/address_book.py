@@ -103,7 +103,7 @@ class Field:
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
         self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
         # Відокремлює всі адреси електронної пошти
-        self.email = re.findall('[a-zA-Z0-9_.]+@[a-z]+.[a-z]+', data)
+        self.email = re.findall('[A-Za-z][A-Za-z0-9_.]+@[A-Za-z]+\.[A-Za-z]{2,}', data)
         # Відокремлює адресу контакту
         self.address = ''.join(re.findall('\/[a-zA-Z-\s]+\/[a-zA-Z0-9-\s]+\/?[a-zA-Z0-9-\s]*\/?[a-zA-Z0-9-\s]*', data))
 
