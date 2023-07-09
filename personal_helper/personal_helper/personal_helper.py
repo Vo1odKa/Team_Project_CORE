@@ -1,4 +1,4 @@
-# from .address_book.address_book import main as address_book
+from .address_book.address_book import main as address_book
 from .notes.notes import main as notes
 from .sort.sort import main as sort
 from prettytable import PrettyTable
@@ -23,7 +23,7 @@ def main():
 
         if string == "1":
             print("\n\nYou went to Address Book")
-            # address_book() 
+            address_book() 
             print("\n\nYou went to Personal Helper")
         elif string == "2":
             print("\n\nYou went to Notes")
