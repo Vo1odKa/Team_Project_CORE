@@ -1,6 +1,5 @@
 notes = []
 
-
 def add_note():
     # Додавання нотатки
     title = input('Enter a title for the note: ')
@@ -15,7 +14,6 @@ def add_note():
     save_notes()
     print('Note successfully added and saved!')
     
-
 def edit_note():
     # Редагування нотатки
     title = input('Enter the title of the note to edit: ')
@@ -113,7 +111,6 @@ def load_notes():
     except FileNotFoundError:
         pass
 
-
 def main():
     load_notes()
 
@@ -128,7 +125,7 @@ def main():
         choice = input('Enter the option number: ')
 
         if choice == '1':
-            notes = add_note()
+            add_note()
         elif choice == '2':
             edit_note()
         elif choice == '3':
