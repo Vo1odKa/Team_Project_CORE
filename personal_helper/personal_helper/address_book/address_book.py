@@ -60,11 +60,14 @@ class AddressBook(UserDict):
 
     # Функція, що виводить імена контактів, у яких день народження через певну кількість днів
     def birthday_after_n_days(self, days):
+        contacts = ''
         for contact in self.data:
-            if self.data[contact].days_to_birthday() == days:
-                return f'{contact} will have birthday in this day'
-            else:
-                return 'No one celebrates their birthday on this day'
+            if int(self.data[contact].days_to_birthday().split(' ')[1]) == int(days):
+                contacts += contact + ' and '
+        if contacts:
+            return f'{contacts.removesuffix(" and ")} will have birthday in this day'
+        else:
+            return 'No one celebrates their birthday on this day'
 
     # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
     def save_to_file(self, filename):
