@@ -168,6 +168,8 @@ class Phone(Field):
         for number in phone:
             if 10 <= len(number) <= 12:
                 correct_numbers.append(number)
+            else:
+                print(f'{number} is not correct')
         self.__phone = correct_numbers
 
 
