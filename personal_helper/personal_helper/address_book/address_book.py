@@ -50,7 +50,7 @@ class AddressBook(UserDict):
     def find(self, piece_of_info):
         res = []
         for name, numbers in self.data.items():
-            if piece_of_info in name or piece_of_info in str(numbers.Phones.phone) in str(numbers.Emails.email) in str(numbers.Birthday.birthday) in str(numbers.Address.address):
+            if piece_of_info in ' '.join([name, str(numbers.Phones.phone), str(numbers.Emails.email), str(numbers.Birthday.birthday), str(numbers.Address.address)]):
                 res.append(name)
         if res:
             for name in res:
