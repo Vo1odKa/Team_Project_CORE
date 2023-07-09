@@ -86,23 +86,24 @@ def extract_file(file_path, destination_folder):
                 extract_file.write(gz_ref.read())
 
     os.remove(file_path)
-
 def main():
-    if len(sys.argv) == 2:
-        folder_name = sys.argv[1]
-    else:
+    choice = input("Enter 1 to specify the folder path for sorting or 2 to exit: ")
+    if choice == '1':
         folder_name = input("Enter the folder path to sort: ")
+        folder_path = os.path.abspath(folder_name)
 
-    folder_path = os.path.abspath(folder_name)
+        if not os.path.isdir(folder_path):
+            print("Invalid folder path.")
+            sys.exit(1)
 
-    if not os.path.isdir(folder_path):
-        print("Invalid folder path.")
-        sys.exit(1)
+        sort_files(folder_path)
+        print("File sorting completed successfully.")
 
-    sort_files(folder_path)
-    print("File sorting completed successfully.")
-
-    sort_files(folder_path)
-
+        sort_files(folder_path)
+    elif choice == '2':
+        print('exit sorting')
+        sys.exit(0)
+    else:
+        print("Invalid choice.")
 if __name__ == "__main__":
     main()
