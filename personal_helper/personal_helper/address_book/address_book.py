@@ -270,7 +270,7 @@ def main():
 #        elif "birthday" in command:
 #            command = command.removeprefix("birthday ")
 #            print(CONTACTS.data[Name(command).name].days_to_birthday())
-#        # Пошук контакту за певною послідовністю літер або чисел
+        # Пошук контакту за певною послідовністю літер або чисел
         elif "find" in command:
             command = command.removeprefix('find ')
             CONTACTS.find(command)
