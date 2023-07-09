@@ -241,14 +241,14 @@ def main():
                     print(contact)
             else:
                 print('The contact list is empty.')
-        # Вивід кількості днів до наступного дня народження певного контакту із тих, що маються
-        elif "birthday" in command:
-            command = command.removeprefix("birthday ")
-            print(CONTACTS.data[Name(command).name].days_to_birthday())
-        # Пошук контакту за певною послідовністю літер або чисел
-        elif "find" in command:
-            command = command.removeprefix('find ')
-            CONTACTS.find(command)
+#        # Вивід кількості днів до наступного дня народження певного контакту із тих, що маються
+#        elif "birthday" in command:
+#            command = command.removeprefix("birthday ")
+#            print(CONTACTS.data[Name(command).name].days_to_birthday())
+#        # Пошук контакту за певною послідовністю літер або чисел
+#        elif "find" in command:
+#            command = command.removeprefix('find ')
+#            CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
         elif command in ("good bye", "bye", "close", "exit", "end"):
             CONTACTS.save_to_file('address_book.txt')
