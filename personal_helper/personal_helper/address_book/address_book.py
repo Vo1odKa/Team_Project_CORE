@@ -18,7 +18,7 @@ Available commands:
 "when birthday [name]*" - calculates the number of days until the contact's next birthday
 "days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
 "show all" - show you full list of contacts in the address book
-"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
+"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.bin"
 
 * - mandatory field
 ** - optional field
@@ -208,8 +208,14 @@ class Address(Field):
     def __init__(self, address):
         super().__init__(address)
 
-# Наша адресна книга
-CONTACTS = AddressBook()
+
+# Продовжуємо доповнювати вже існуючу адресну книгу, або ж створюємо нову з нуля
+try:
+    with open("address_book.bin", "rb") as fh:
+        CONTACTS = pickle.load(fh)
+except FileNotFoundError:
+        CONTACTS = AddressBook()
+
 
 
 # Функція привітання
@@ -219,8 +225,9 @@ CONTACTS = AddressBook()
 
 # Фунція виходу
 def close():
-    CONTACTS.save_to_file('address_book.txt')
-    return "The address book is saved to a file 'address_book.txt'. See You later!"
+    with open("address_book.bin", "wb") as fh:
+        pickle.dump(CONTACTS, fh)
+    return "The address book is saved to a file 'address_book.bin'. See You later!"
 
 
 # Уникання будь-яких помилок під час роботи програми
