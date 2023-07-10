@@ -71,15 +71,15 @@ class AddressBook(UserDict):
         else:
             return 'No one celebrates their birthday on this day'
 
-    # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
-    def save_to_file(self, filename):
-        with open(filename, "w+") as file:
-            file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format("Name", "Phones", "Emails", "Birthday", "Address"))
-            for name, info in self.data.items():
-                phones = ', '.join(info.Phones.phone)
-                emails = ', '.join(info.Emails.email)
-                file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format(
-                    name, phones, emails, info.Birthday.birthday, info.Address.address))
+#    # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
+#    def save_to_file(self, filename):
+#        with open(filename, "w+") as file:
+#            file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format("Name", "Phones", "Emails", "Birthday", "Address"))
+#            for name, info in self.data.items():
+#                phones = ', '.join(info.Phones.phone)
+#                emails = ', '.join(info.Emails.email)
+#                file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format(
+#                    name, phones, emails, info.Birthday.birthday, info.Address.address))
 
 
 #    # Функція, що дозволяє завантажити адресну книгу з файлу на ПК
