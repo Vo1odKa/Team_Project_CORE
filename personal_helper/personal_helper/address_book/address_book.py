@@ -4,25 +4,22 @@ import pickle
 import re
 
 tutorial = '''
-Hello! Welcome to Address Book.
-
 Available commands:
 "add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
-    name - no more than three words
-    phones - can be several (each must contain 10 to 12 digits), enter with a space
-    emails - can be several, enter with a space
-    birthday - date in format dd/mm/yyyy (must be only one)
-    address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
+ name - no more than three words
+ phones - can be several (each must contain 10 to 12 digits), enter with a space
+ emails - can be several, enter with a space
+ birthday - date in format dd/mm/yyyy (must be only one)
+ address - must contain street and house number, all elements must be separated by a slash and start with a slash (example: /Country/City/Street/House)
 "phone [name]*" - shows phone numbers of a particular contact
 "find [any piece of information]*" - search for matches among existing contacts
 "when birthday [name]*" - calculates the number of days until the contact's next birthday
 "days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
+"change ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - change any contact's data
+"delete ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - delete any contact's data
 "show all" - show you full list of contacts in the address book
 "good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.bin"
-
-* - mandatory field
-** - optional field
-'''
+* - mandatory field      ** - optional field    '''
 
 # Об'єкти класу "адресна книга"
 class AddressBook(UserDict):
@@ -34,14 +31,6 @@ class AddressBook(UserDict):
     # Функція, що виводить Номери телефону певного контакту
     def show_number(self, Name):
         return self.data[Name.name].Phones.phone
-
-#    # Функція, що вовидить за раз N-ну кількість контактів із адресної книги (за замовчуванням виведе всі)
-#    def iterator(self, N=None):
-#        index = 0
-#        N = len(self.data) if not N else N
-#        while index < len(self.data):
-#            yield list(self.data)[index: index + N]
-#            index += N
 
     # Функція, що виводить спbсок всіх контактів, що містяться у адресній книзі
     def show_all(self):
@@ -71,24 +60,6 @@ class AddressBook(UserDict):
         else:
             return 'No one celebrates their birthday on this day'
 
-#    # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
-#    def save_to_file(self, filename):
-#        with open(filename, "w+") as file:
-#            file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format("Name", "Phones", "Emails", "Birthday", "Address"))
-#            for name, info in self.data.items():
-#                phones = ', '.join(info.Phones.phone)
-#                emails = ', '.join(info.Emails.email)
-#                file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format(
-#                    name, phones, emails, info.Birthday.birthday, info.Address.address))
-
-
-#    # Функція, що дозволяє завантажити адресну книгу з файлу на ПК
-#    def read_from_file(self, filename):
-#        with open(filename, "rb") as file:
-#            content = pickle.load(file)
-#        return content
-
-
 # Об'єкти класу "контакт", що міститеме всю інформацію про нього
 class Record:
     def __init__(self, Name, Phones=None, Birthday=None, Emails=None, Address=None):
@@ -103,15 +74,45 @@ class Record:
         self.Phones.phone = list(set(self.Phones.phone) | set(Phone.phone))
         return "Done!"
 
-#    # Функція, що змінює наявні номери телефону на нові
-#    def change_phone(self, Phone):
-#        self.Phones = Phone
-#       return "Done!"
+    # Функція, що змінює наявні номери телефону на нові
+    def change_phone(self, Phone):
+        self.Phones = Phone
+        return "Done!"
 
-#    # Функція, що видаляє наявний номер телефону
-#    def delite_phone(self, Phone):
-#        self.Phones.phone = list(set(self.Phones.phone) - set(Phone.phone))
-#        return "Done!"
+    # Функція, що видаляє наявний номер телефону
+    def delete_phone(self, Phone):
+        self.Phones.phone = list(set(self.Phones.phone) - set(Phone.phone))
+        return "Done!"
+    
+    # Функція, що змінює день народження на новий
+    def change_birthday(self, Birthday):
+        self.Birthday = Birthday
+        return "Done!"
+
+    # Функція, що видаляє наявний день народження
+    def delete_birthday(self, Birthday):
+        self.Birthday.birthday = list(set(self.Birthday.birthday) - set(Birthday.birthday))
+        return "Done!"
+    
+    # Функція, що змінює наявні email на нові
+    def change_email(self, Email):
+        self.Emails = Email
+        return "Done!"
+
+    # Функція, що видаляє наявний email
+    def delete_email(self, Email):
+        self.Emails.email = list(set(self.Emails.email) - set(Email.email))
+        return "Done!"
+    
+    # Функція, що змінює наявну адресу
+    def change_address(self, Address):
+        self.Address = Address
+        return "Done!"
+
+    # Функція, що видаляє наявну адресу
+    def delete_address(self, Address):
+        self.Address.address = list(set(self.Address.address) - set(Address.address))
+        return "Done!"
 
     # Функція, що розраховує кількість днів до наступного дня нородження контакта
     def days_to_birthday(self):
@@ -134,15 +135,15 @@ class Record:
 class Field:
     def __init__(self, data):
         # Відокремлюються всі слова та обєднує їх у "ім'я" контакту
-        self.name = re.findall('[a-z]+\s?[a-z]+\s?[a-z]+', data)[0]
+        self.name = re.findall(r'[a-z]+\s?[a-z]+\s?[a-z]+', data)[0]
         # Відокремлюються всі номери
-        self.phone = re.findall('\b\d{10,12}\b', data)
+        self.phone = re.findall(r'\b\d{10,12}\b', data)
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
-        self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
+        self.birthday = re.findall(r'\d{2}\/\d{2}\/\d{4}', data)
         # Відокремлює всі адреси електронної пошти
-        self.email = re.findall('[A-Za-z][A-Za-z0-9_.]+@[A-Za-z]+\.[A-Za-z]{2,}', data)
+        self.email = re.findall(r'[a-zA-Z0-9_.]+@[a-zA-Z]+[.][a-zA-Z]{2,}', data)
         # Відокремлює адресу контакту
-        self.address = ''.join(re.findall('\/[a-zA-Z-.\s]+\/[a-zA-Z0-9-.\s]+\/?[a-zA-Z0-9-.\s]*\/?[a-zA-Z0-9-.\s]*\/?[a-zA-Z0-9-.\s]*', data))
+        self.address = re.findall(r'\/[a-zA-Z-.\s]+\/[a-zA-Z0-9-.\s]+\/?[a-zA-Z0-9-.\s]*\/?[a-zA-Z0-9-.\s]*\/?[a-zA-Z0-9-.\s]*', data)
 
 
 # Об'єкти класу "ім'я контакту"
@@ -150,58 +151,20 @@ class Name(Field):
     def __init__(self, name):
         super().__init__(name)
 
-
 # Об'єкти класу "номер телефону"
 class Phone(Field):
     def __init__(self, phone):
-#        self.__phone = None
         super().__init__(phone)
-
-#    @property
-#    def phone(self):
-#        return self.__phone
-
-#    # Перевірка на коректність вводу номерів телефону (мають містити від 10 до 12 чисел)
-#    @phone.setter
-#    def phone(self, phone):
-#        correct_numbers = []
-#        for number in phone:
-#            if 10 <= len(number) <= 12:
-#                correct_numbers.append(number)
-#            else:
-#                pass
-#                # print(f'{number} is not correct')
-#        self.__phone = correct_numbers
-
 
 # Обєкти класу "день народження"
 class Birthday(Field):
     def __init__(self, birthday):
-        self.__birthday = ''
         super().__init__(birthday)
-
-    @property
-    def birthday(self):
-        return self.__birthday
-
-    # Перевірка на коректність вводу (має бути формат дд/мм/рррр)
-    @birthday.setter
-    def birthday(self, birthday):
-        try:
-            birthday = birthday[:10]
-            test = datetime.strptime(birthday, '%d/%m/%Y')
-            current_datetime = datetime.now()
-            if (current_datetime - test).days > 0:
-                self.__birthday = birthday
-        except:
-            pass
-
 
 # Обєкти класу "електронна пошта"
 class Email(Field):
     def __init__(self, email):
         super().__init__(email)
-
 
 # Обєкти класу "адреса"
 class Address(Field):
@@ -243,7 +206,7 @@ def main():
         # Введення команди з консолі
         command = input('Enter the command: ').lower()
         # Додавання нового контакту
-        if 'add' in command:
+        if command.startswith('add'):
             command = command.removeprefix('add ')
             if Name(command).name in CONTACTS.data:
                 print(CONTACTS.data[Name(command).name].add_phone(
@@ -252,17 +215,41 @@ def main():
             else:
                 print(CONTACTS.add_record(
                     Record(Name(command), Phone(command), Birthday(command), Email(command), Address(command))))
-#        # Зміна номеру телефону у вже існуючому контакті
-#        elif "change" in command:
-#            command = command.removeprefix('change ')
-#            print(CONTACTS.data[Name(command).name].change_phone(Phone(command)))
-#        # Видалення номеру телефону з вже існуючого контакту
-#        elif "delite" in command:
-#            command = command.removeprefix('delite ')
-#            print(CONTACTS.data[Name(command).name].delite_phone(Phone(command)))
+        # Зміна номеру телефону у вже існуючому контакті
+        elif command.startswith('change phone'):
+            command = command.removeprefix('change phone ')
+            print(CONTACTS.data[Name(command).name].change_phone(Phone(command)))
+        # Видалення номеру телефону з вже існуючого контакту
+        elif command.startswith('delete phone'):
+            command = command.removeprefix('delete phone ')
+            print(CONTACTS.data[Name(command).name].delete_phone(Phone(command)))
+        # Зміна дня народження у вже існуючому контакті
+        elif command.startswith('change birthday'):
+            command = command.removeprefix('change birthday ')
+            print(CONTACTS.data[Name(command).name].change_birthday(Birthday(command)))
+        # Видалення дня народження з вже існуючого контакту
+        elif command.startswith('delete birthday'):
+            command = command.removeprefix('delete birthday ')
+            print(CONTACTS.data[Name(command).name].delete_birthday(Birthday(command)))
+        # Зміна email у вже існуючому контакті
+        elif command.startswith('change email'):
+            command = command.removeprefix('change email ')
+            print(CONTACTS.data[Name(command).name].change_email(Email(command)))
+        # Видалення email з вже існуючого контакту
+        elif command.startswith('delete email'):
+            command = command.removeprefix('delete email ')
+            print(CONTACTS.data[Name(command).name].delete_email(Email(command)))
+        # Зміна адреси у вже існуючому контакті
+        elif command.startswith('change address'):
+            command = command.removeprefix('change address ')
+            print(CONTACTS.data[Name(command).name].change_address(Address(command)))
+        # Видалення адреси з вже існуючого контакту
+        elif command.startswith('delete address'):
+            command = command.removeprefix('delete address ')
+            print(CONTACTS.data[Name(command).name].delete_address(Address(command)))
         # Вивід всіх існуючих номерів телефону певного контакту (вказувати ім'я після пробілу)
-        elif "phone" in command:
-            command = command.removeprefix("phone ")
+        elif command.startswith('phone'):
+            command = command.removeprefix('phone ')
             print(CONTACTS.show_number(Name(command)))
         # Вивід всіх існуючих контактів у адресній книзі
         elif command == "show all":
@@ -272,14 +259,14 @@ def main():
             else:
                 print('The contact list is empty.')
         # Вивід кількості днів до наступного дня народження певного контакту із тих, що маються
-        elif "when birthday" in command:
-            command = command.removeprefix("when birthday ")
+        elif command.startswith('when birthday'):
+            command = command.removeprefix('when birthday ')
             print(CONTACTS.data[Name(command).name].days_to_birthday())
-        elif "days until birthday: " in command:
-            command = command.removeprefix("days until birthday: ")
+        elif command.startswith('days until birthday'):
+            command = command.removeprefix('days until birthday: ')
             print(CONTACTS.birthday_after_n_days(command))
         # Пошук контакту за певною послідовністю літер або чисел
-        elif "find" in command:
+        elif command.startswith('find'):
             command = command.removeprefix('find ')
             CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
