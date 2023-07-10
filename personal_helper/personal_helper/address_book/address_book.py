@@ -18,7 +18,7 @@ Available commands:
 "when birthday [name]*" - calculates the number of days until the contact's next birthday
 "days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
 "show all" - show you full list of contacts in the address book
-"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
+"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.bin"
 
 * - mandatory field
 ** - optional field
@@ -71,15 +71,15 @@ class AddressBook(UserDict):
         else:
             return 'No one celebrates their birthday on this day'
 
-    # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
-    def save_to_file(self, filename):
-        with open(filename, "w+") as file:
-            file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format("Name", "Phones", "Emails", "Birthday", "Address"))
-            for name, info in self.data.items():
-                phones = ', '.join(info.Phones.phone)
-                emails = ', '.join(info.Emails.email)
-                file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format(
-                    name, phones, emails, info.Birthday.birthday, info.Address.address))
+#    # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
+#    def save_to_file(self, filename):
+#        with open(filename, "w+") as file:
+#            file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format("Name", "Phones", "Emails", "Birthday", "Address"))
+#            for name, info in self.data.items():
+#                phones = ', '.join(info.Phones.phone)
+#                emails = ', '.join(info.Emails.email)
+#                file.write('{:^20}|{:^40}|{:^70}|{:^10}|{:^50}\n'.format(
+#                    name, phones, emails, info.Birthday.birthday, info.Address.address))
 
 
 #    # Функція, що дозволяє завантажити адресну книгу з файлу на ПК
@@ -136,7 +136,7 @@ class Field:
         # Відокремлюються всі слова та обєднує їх у "ім'я" контакту
         self.name = re.findall('[a-z]+\s?[a-z]+\s?[a-z]+', data)[0]
         # Відокремлюються всі номери
-        self.phone = re.findall('\d+', data)
+        self.phone = re.findall('\b\d{10,12}\b', data)
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
         self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
         # Відокремлює всі адреси електронної пошти
@@ -154,24 +154,24 @@ class Name(Field):
 # Об'єкти класу "номер телефону"
 class Phone(Field):
     def __init__(self, phone):
-        self.__phone = None
+#        self.__phone = None
         super().__init__(phone)
 
-    @property
-    def phone(self):
-        return self.__phone
+#    @property
+#    def phone(self):
+#        return self.__phone
 
-    # Перевірка на коректність вводу номерів телефону (мають містити від 10 до 12 чисел)
-    @phone.setter
-    def phone(self, phone):
-        correct_numbers = []
-        for number in phone:
-            if 10 <= len(number) <= 12:
-                correct_numbers.append(number)
-            else:
-                pass
-                # print(f'{number} is not correct')
-        self.__phone = correct_numbers
+#    # Перевірка на коректність вводу номерів телефону (мають містити від 10 до 12 чисел)
+#    @phone.setter
+#    def phone(self, phone):
+#        correct_numbers = []
+#        for number in phone:
+#            if 10 <= len(number) <= 12:
+#                correct_numbers.append(number)
+#            else:
+#                pass
+#                # print(f'{number} is not correct')
+#        self.__phone = correct_numbers
 
 
 # Обєкти класу "день народження"
@@ -208,20 +208,6 @@ class Address(Field):
     def __init__(self, address):
         super().__init__(address)
 
-# Наша адресна книга
-CONTACTS = AddressBook()
-
-
-# Функція привітання
-#def hello():
-#    return 'How can I help you?'
-
-
-# Фунція виходу
-def close():
-    CONTACTS.save_to_file('address_book.txt')
-    return "The address book is saved to a file 'address_book.txt'. See You later!"
-
 
 # Уникання будь-яких помилок під час роботи програми
 def input_error(func):
@@ -244,15 +230,18 @@ def input_error(func):
 # Головна функція, куди додаємо весь функціонал
 @ input_error
 def main():
+    # Продовжуємо доповнювати вже існуючу адресну книгу, або ж створюємо нову з нуля
+    try:
+        with open("address_book.bin", "rb") as fh:
+            CONTACTS = pickle.load(fh)
+    except FileNotFoundError:
+        CONTACTS = AddressBook()
     print(tutorial)
     bot_status = True
     # Умава, що забеспечує безкінечний цикл запиту, поки не буде виходу
     while bot_status:
         # Введення команди з консолі
         command = input('Enter the command: ').lower()
-#        # Привітання з користувачем (сюди можна вставити правила вводу всіх можливих функцій)
-#        if command == 'hello':
-#            print(hello())
         # Додавання нового контакту
         if 'add' in command:
             command = command.removeprefix('add ')
@@ -295,7 +284,9 @@ def main():
             CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
         elif command in ("good bye", "bye", "close", "exit", "end"):
-            print(close())
+            with open("address_book.bin", "wb") as fh:
+                pickle.dump(CONTACTS, fh)
+            print("The address book is saved to a file 'address_book.bin'. See You later!")
             bot_status = False
         # Якщо користувач некоректно ввів команду (тут можна реалізувати додаткове завдання з підказкою можливих команд)
         else:
