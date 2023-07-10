@@ -209,15 +209,6 @@ class Address(Field):
         super().__init__(address)
 
 
-# Продовжуємо доповнювати вже існуючу адресну книгу, або ж створюємо нову з нуля
-try:
-    with open("address_book.bin", "rb") as fh:
-        CONTACTS = pickle.load(fh)
-except FileNotFoundError:
-        CONTACTS = AddressBook()
-
-
-
 # Функція привітання
 #def hello():
 #    return 'How can I help you?'
@@ -251,6 +242,12 @@ def input_error(func):
 # Головна функція, куди додаємо весь функціонал
 @ input_error
 def main():
+    # Продовжуємо доповнювати вже існуючу адресну книгу, або ж створюємо нову з нуля
+    try:
+        with open("address_book.bin", "rb") as fh:
+            CONTACTS = pickle.load(fh)
+    except FileNotFoundError:
+        CONTACTS = AddressBook()
     print(tutorial)
     bot_status = True
     # Умава, що забеспечує безкінечний цикл запиту, поки не буде виходу
