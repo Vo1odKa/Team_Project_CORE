@@ -14,8 +14,10 @@ Available commands:
     birthday - date in format dd/mm/yyyy (must be only one)
     address - must contain at least a street and a house number, all elements must be separated by a slash and start with a slash (example: /United States/New York/Atlantic st./3-B)
 "phone [name]*" - shows phone numbers of a particular contact
+"find [any piece of information]*" - search for matches among existing contacts
+"when birthday [name]*" - calculates the number of days until the contact's next birthday
+"days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
 "show all" - show you full list of contacts in the address book
-"find [any piece of information]" - search for matches among existing contacts
 "good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.txt"
 
 * - mandatory field
@@ -57,6 +59,17 @@ class AddressBook(UserDict):
                 print(f'{name}: {self.data[name].Phones.phone} {self.data[name].Emails.email} {self.data[name].Birthday.birthday} {self.data[name].Address.address}')
         else:
             print('No matches')
+
+    # Функція, що виводить імена контактів, у яких день народження через певну кількість днів
+    def birthday_after_n_days(self, days):
+        contacts = ''
+        for contact in self.data:
+            if int(self.data[contact].days_to_birthday().split(' ')[1]) == int(days):
+                contacts += contact + ' and '
+        if contacts:
+            return f'{contacts.removesuffix(" and ")} will have birthday in this day'
+        else:
+            return 'No one celebrates their birthday on this day'
 
     # Функція, що дозволяє зберігти наявну адресну книгу у файл на ПК
     def save_to_file(self, filename):
@@ -100,21 +113,21 @@ class Record:
 #        self.Phones.phone = list(set(self.Phones.phone) - set(Phone.phone))
 #        return "Done!"
 
-#    # Функція, що розраховує кількість днів до наступного дня нородження контакта
-#    def days_to_birthday(self):
-#        if self.Birthday.birthday:
-#            current_datetime = datetime.now()
-#            birthday = datetime.strptime(self.Birthday.birthday, '%d/%m/%Y')
-#            if int(current_datetime.month) > int(birthday.month) or (int(current_datetime.month) == int(birthday.month) and int(current_datetime.day) >= int(birthday.day)):
-#                next_birthday = datetime(
-#                    year=current_datetime.year+1, month=birthday.month, day=birthday.day)
-#                return f"In {(next_birthday - current_datetime).days} days"
-#            else:
-#                next_birthday = datetime(
-#                    year=current_datetime.year, month=birthday.month, day=birthday.day)
-#                return f"In {(next_birthday - current_datetime).days} days"
-#        else:
-#            return "The birthsay date is unknown."
+    # Функція, що розраховує кількість днів до наступного дня нородження контакта
+    def days_to_birthday(self):
+        if self.Birthday.birthday:
+            current_datetime = datetime.now()
+            birthday = datetime.strptime(self.Birthday.birthday, '%d/%m/%Y')
+            if int(current_datetime.month) > int(birthday.month) or (int(current_datetime.month) == int(birthday.month) and int(current_datetime.day) >= int(birthday.day)):
+                next_birthday = datetime(
+                    year=current_datetime.year+1, month=birthday.month, day=birthday.day)
+                return f"In {(next_birthday - current_datetime).days} days"
+            else:
+                next_birthday = datetime(
+                    year=current_datetime.year, month=birthday.month, day=birthday.day)
+                return f"In {(next_birthday - current_datetime).days} days"
+        else:
+            return "The birthsay date is unknown."
 
 
 # Після отримання введеної користувачем команди та відокремлення від неї слова-ключа, отримана інформація сортується за критеріями
@@ -155,6 +168,9 @@ class Phone(Field):
         for number in phone:
             if 10 <= len(number) <= 12:
                 correct_numbers.append(number)
+            else:
+                pass
+                # print(f'{number} is not correct')
         self.__phone = correct_numbers
 
 
@@ -266,10 +282,13 @@ def main():
                     print(contact)
             else:
                 print('The contact list is empty.')
-#        # Вивід кількості днів до наступного дня народження певного контакту із тих, що маються
-#        elif "birthday" in command:
-#            command = command.removeprefix("birthday ")
-#            print(CONTACTS.data[Name(command).name].days_to_birthday())
+        # Вивід кількості днів до наступного дня народження певного контакту із тих, що маються
+        elif "when birthday" in command:
+            command = command.removeprefix("when birthday ")
+            print(CONTACTS.data[Name(command).name].days_to_birthday())
+        elif "days until birthday: " in command:
+            command = command.removeprefix("days until birthday: ")
+            print(CONTACTS.birthday_after_n_days(command))
         # Пошук контакту за певною послідовністю літер або чисел
         elif "find" in command:
             command = command.removeprefix('find ')
