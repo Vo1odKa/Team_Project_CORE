@@ -1,19 +1,24 @@
+from prettytable import PrettyTable
+
 notes = []
+
 
 def add_note():
     # Додавання нотатки
     title = input('Enter a title for the note: ')
     content = input('Enter the note text: ')
-    tags = input('Enter tags for the note (comma-separated, press Enter to skip): ')
-   
+    tags = input(
+        'Enter tags for the note (comma-separated, press Enter to skip): ')
+
     if tags:
         tags = [tag.strip() for tag in tags.split(',')]
-        
+
     note = {'title': title, 'content': content, 'tags': tags}
     notes.append(note)
     save_notes()
     print('Note successfully added and saved!')
-    
+
+
 def edit_note():
     # Редагування нотатки
     title = input('Enter the title of the note to edit: ')
@@ -23,11 +28,12 @@ def edit_note():
         if note['title'] == title:
             new_title = input('Enter a new title for the note: ')
             new_content = input('Enter new note text: ')
-            new_tags = input('Enter new tags for the note (comma-separated, press Enter to skip): ')
-            
+            new_tags = input(
+                'Enter new tags for the note (comma-separated, press Enter to skip): ')
+
             if new_tags:
                 new_tags = [tag.strip() for tag in new_tags.split(',')]
-            
+
             note['title'] = new_title
             note['content'] = new_content
             note['tags'] = new_tags
@@ -39,6 +45,7 @@ def edit_note():
         print('Note successfully edited and saved!')
     else:
         print('No note with this title was found.')
+
 
 def delete_note():
     # Видалення нотатки
@@ -57,8 +64,9 @@ def delete_note():
     else:
         print('No note with this title was found.')
 
+
 def search_notes():
-    # Пошук нотатків
+    # Пошук нотаток
     keyword = input('Enter a keyword to search: ')
     if found_notes := [
         note
@@ -66,11 +74,10 @@ def search_notes():
         if keyword.lower() in note['title'].lower()
         or keyword.lower() in note['content'].lower()
     ]:
-        print('Found notes:')
+        table = PrettyTable(['Title', 'Text'])
         for note in found_notes:
-            print(f"Title: {note['title']}")
-            print(f"Text: {note['content']}")
-            print()
+            table.add_row([note['title'], note['content']])
+        print(table)
     else:
         print('No notes found.')
 
@@ -83,29 +90,28 @@ def sort_notes_by_tag():
             tags.update(note['tags'])
     tags_list = list(tags)
 
-    print('Available tags:')
+    table = PrettyTable(['Tag Number', 'Tag'])
     for i, tag in enumerate(tags_list):
-        print(f'{i + 1}. {tag}')
+        table.add_row([i + 1, tag])
+    print(table)
 
     choice = input('Enter the tag number to sort notes: ')
     if choice.isdigit() and int(choice) in range(1, len(tags_list) + 1):
         tag = tags_list[int(choice) - 1]
-        if sorted_notes := [
-            note
-            for note in notes
-            if note['tags']
-            and tag.lower() in [t.lower() for t in note['tags']]
-        ]:
-            print('Sorted notes:')
+        sorted_notes = [note for note in notes if note['tags']
+                        and tag.lower() in [t.lower() for t in note['tags']]]
+        if sorted_notes:
+            table = PrettyTable(['Title', 'Text', 'Tags'])
             for note in sorted_notes:
-                print(f"Title: {note['title']}")
-                print(f"Text: {note['content']}")
-                print(f"Tags: {', '.join(note['tags'])}")
-                print()
+                table.add_row([note['title'], note['content'],
+                               ', '.join(note['tags'])])
+            print('Sorted notes:')
+            print(table)
         else:
             print('No notes found with this tag.')
     else:
         print('Invalid tag number.')
+
 
 def save_notes():
     # Збереження нотаток у файл
@@ -144,34 +150,44 @@ def load_notes():
     except FileNotFoundError:
         pass
 
-def main():
-    load_notes()
 
+def notes_menu():
+    print("\nHello, this is Notes Menu:")
+    table = PrettyTable(['Command', 'Instruction'])
+    table.add_rows(
+        [
+            ["1", "Add a note."],
+            ["2", "Edit note."],
+            ["3", "Delete note."],
+            ["4", "Search notes."],
+            ["5", "Sort notes by tags."],
+            ["6", "Go out."],
+        ]
+    )
     while True:
-        print('Menu:')
-        print('1. Add a note')
-        print('2. Edit note')
-        print('3. Delete note')
-        print('4. Search notes')
-        print('5. Sort notes by tags')
-        print('6. Go out')
+        print(table)
+        command = input("Enter command to Notes Menu: ")
 
-        choice = input('Enter the option number: ')
-
-        if choice == '1':
+        if command == "1":
             add_note()
-        elif choice == '2':
+        elif command == "2":
             edit_note()
-        elif choice == '3':
+        elif command == "3":
             delete_note()
-        elif choice == '4':
+        elif command == "4":
             search_notes()
-        elif choice == '5':
+        elif command == "5":
             sort_notes_by_tag()
-        elif choice == '6':
+        elif command == "6":
             break
         else:
-            print('Invalid input. Please try again.')
+            print("Invalid command.")
+
+
+def main():
+    load_notes()
+    notes_menu()
+
 
 if __name__ == "__main__":
     main()
