@@ -209,18 +209,6 @@ class Address(Field):
         super().__init__(address)
 
 
-# Функція привітання
-#def hello():
-#    return 'How can I help you?'
-
-
-# Фунція виходу
-def close():
-    with open("address_book.bin", "wb") as fh:
-        pickle.dump(CONTACTS, fh)
-    return "The address book is saved to a file 'address_book.bin'. See You later!"
-
-
 # Уникання будь-яких помилок під час роботи програми
 def input_error(func):
     def inner():
@@ -254,9 +242,6 @@ def main():
     while bot_status:
         # Введення команди з консолі
         command = input('Enter the command: ').lower()
-#        # Привітання з користувачем (сюди можна вставити правила вводу всіх можливих функцій)
-#        if command == 'hello':
-#            print(hello())
         # Додавання нового контакту
         if 'add' in command:
             command = command.removeprefix('add ')
@@ -299,7 +284,9 @@ def main():
             CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
         elif command in ("good bye", "bye", "close", "exit", "end"):
-            print(close())
+            with open("address_book.bin", "wb") as fh:
+                pickle.dump(CONTACTS, fh)
+            print("The address book is saved to a file 'address_book.bin'. See You later!")
             bot_status = False
         # Якщо користувач некоректно ввів команду (тут можна реалізувати додаткове завдання з підказкою можливих команд)
         else:
