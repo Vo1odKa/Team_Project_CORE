@@ -136,7 +136,7 @@ class Field:
         # Відокремлюються всі слова та обєднує їх у "ім'я" контакту
         self.name = re.findall('[a-z]+\s?[a-z]+\s?[a-z]+', data)[0]
         # Відокремлюються всі номери
-        self.phone = re.findall('\d+', data)
+        self.phone = re.findall('\b\d{10,12}\b', data)
         # Відокремлення дату, що має формат дд/мм/рррр (мається на увазі, що вона має бути введена тільки одна)
         self.birthday = ''.join(re.findall('\d{2}\/\d{2}\/\d{4}', data))
         # Відокремлює всі адреси електронної пошти
@@ -154,24 +154,24 @@ class Name(Field):
 # Об'єкти класу "номер телефону"
 class Phone(Field):
     def __init__(self, phone):
-        self.__phone = None
+#        self.__phone = None
         super().__init__(phone)
 
-    @property
-    def phone(self):
-        return self.__phone
+#    @property
+#    def phone(self):
+#        return self.__phone
 
-    # Перевірка на коректність вводу номерів телефону (мають містити від 10 до 12 чисел)
-    @phone.setter
-    def phone(self, phone):
-        correct_numbers = []
-        for number in phone:
-            if 10 <= len(number) <= 12:
-                correct_numbers.append(number)
-            else:
-                pass
-                # print(f'{number} is not correct')
-        self.__phone = correct_numbers
+#    # Перевірка на коректність вводу номерів телефону (мають містити від 10 до 12 чисел)
+#    @phone.setter
+#    def phone(self, phone):
+#        correct_numbers = []
+#        for number in phone:
+#            if 10 <= len(number) <= 12:
+#                correct_numbers.append(number)
+#            else:
+#                pass
+#                # print(f'{number} is not correct')
+#        self.__phone = correct_numbers
 
 
 # Обєкти класу "день народження"
