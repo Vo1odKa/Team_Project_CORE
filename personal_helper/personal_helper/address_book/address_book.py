@@ -5,21 +5,29 @@ import re
 
 tutorial = '''
 Available commands:
-1. "add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
+1. Adds a new contact to the address book
     name - no more than three words
     phones - can be several (each must contain 10 to 12 digits), enter with a space
     emails - can be several, enter with a space
     birthday - date in format dd/mm/yyyy (must be only one)
     address - must contain street and house number, all elements must be separated by a slash and start with a slash (example: /Country/City/Street/House)
-2. shows phone numbers of a particular contact
-3. search for matches among existing contacts
-4. "when birthday [name]*" - calculates the number of days until the contact's next birthday
-5. "days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
-6. "change ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - change any contact's data
-7. "delete ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - delete any contact's data
-8. show you full list of contacts in the address book
-9. exit the address book and save it in file "address_book.bin"
+2. Shows phone numbers of a particular contact
+3. Search for matches among existing contacts
+4. Calculates the number of days until the contact's next birthday
+5. Displays the names of contacts whose birthday is in the specified number of days
+6. Change any contact's data
+7. Delete any contact's data
+8. Show you full list of contacts in the address book
+9. Exit the address book and save it in file "address_book.bin"
     * - mandatory field ** - optional field'''
+
+change_or_delete_menu = '''
+1. Phone
+2. Email
+3. Birthday
+4. Address
+5. Go back
+'''
 
 # Об'єкти класу "адресна книга"
 class AddressBook(UserDict):
@@ -214,44 +222,55 @@ def main():
             else:
                 print(CONTACTS.add_record(
                     Record(Name(command), Phone(command), Birthday(command), Email(command), Address(command))))
-        # Зміна номеру телефону у вже існуючому контакті
-        elif command.startswith('change phone'):
-            command = command.removeprefix('change phone ')
-            print(CONTACTS.data[Name(command).name].change_phone(Phone(command)))
-        # Видалення номеру телефону з вже існуючого контакту
-        elif command.startswith('delete phone'):
-            command = command.removeprefix('delete phone ')
-            print(CONTACTS.data[Name(command).name].delete_phone(Phone(command)))
-        # Зміна дня народження у вже існуючому контакті
-        elif command.startswith('change birthday'):
-            command = command.removeprefix('change birthday ')
-            print(CONTACTS.data[Name(command).name].change_birthday(Birthday(command)))
-        # Видалення дня народження з вже існуючого контакту
-        elif command.startswith('delete birthday'):
-            command = command.removeprefix('delete birthday ')
-            print(CONTACTS.data[Name(command).name].delete_birthday(Birthday(command)))
-        # Зміна email у вже існуючому контакті
-        elif command.startswith('change email'):
-            command = command.removeprefix('change email ')
-            print(CONTACTS.data[Name(command).name].change_email(Email(command)))
-        # Видалення email з вже існуючого контакту
-        elif command.startswith('delete email'):
-            command = command.removeprefix('delete email ')
-            print(CONTACTS.data[Name(command).name].delete_email(Email(command)))
-        # Зміна адреси у вже існуючому контакті
-        elif command.startswith('change address'):
-            command = command.removeprefix('change address ')
-            print(CONTACTS.data[Name(command).name].change_address(Address(command)))
-        # Видалення адреси з вже існуючого контакту
-        elif command.startswith('delete address'):
-            command = command.removeprefix('delete address ')
-            print(CONTACTS.data[Name(command).name].delete_address(Address(command)))
-        # Вивід всіх існуючих номерів телефону певного контакту (вказувати ім'я після пробілу)
-        elif command.startswith('2'):
-            command = input('Enter the name of the contact: ').lower()
-            print(CONTACTS.show_number(Name(command)))
+        elif command.atartswith('6'):
+            print(change_or_delete_menu)
+            command = input('Enter the number of the element you want to change: ')
+            # Зміна номеру телефону у вже існуючому контакті
+            if command.startswith('1'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].change_phone(Phone(command)))
+            # Зміна email у вже існуючому контакті
+            elif command.startswith('2'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].change_email(Email(command)))
+            # Зміна дня народження у вже існуючому контакті
+            elif command.startswith('3'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].change_birthday(Birthday(command)))
+            # Зміна адреси у вже існуючому контакті
+            elif command.startswith('4'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].change_address(Address(command)))
+            # Вихід у попереднє меню
+            elif command.startswith('5'):
+                pass
+            else:
+                print("Command is not correct.")
+        elif command.atartswith('7'):
+            print(change_or_delete_menu)
+            # Видалення номеру телефону з вже існуючого контакту
+            if command.startswith('1'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].delete_phone(Phone(command)))
+            # Видалення email з вже існуючого контакту
+            elif command.startswith('2'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].delete_email(Email(command)))
+            # Видалення дня народження з вже існуючого контакту
+            elif command.startswith('3'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].delete_birthday(Birthday(command)))
+            # Видалення адреси з вже існуючого контакту
+            elif command.startswith('4'):
+                command = input('Enter the name of the contact: ')
+                print(CONTACTS.data[Name(command).name].delete_address(Address(command)))
+            # Вихід у попереднє меню
+            elif command.startswith('5'):
+                pass
+            else:
+                print("Command is not correct.")
         # Вивід всіх існуючих контактів у адресній книзі
-        elif command == "8":
+        elif command.startswith('8'):
             if CONTACTS:
                 for contact in CONTACTS.show_all():
                     print(contact)
