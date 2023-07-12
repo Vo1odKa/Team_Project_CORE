@@ -5,21 +5,21 @@ import re
 
 tutorial = '''
 Available commands:
-"add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
- name - no more than three words
- phones - can be several (each must contain 10 to 12 digits), enter with a space
- emails - can be several, enter with a space
- birthday - date in format dd/mm/yyyy (must be only one)
- address - must contain street and house number, all elements must be separated by a slash and start with a slash (example: /Country/City/Street/House)
-"phone [name]*" - shows phone numbers of a particular contact
-"find [any piece of information]*" - search for matches among existing contacts
-"when birthday [name]*" - calculates the number of days until the contact's next birthday
-"days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
-"change ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - change any contact's data
-"delete ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - delete any contact's data
-"show all" - show you full list of contacts in the address book
-"good bye", "bye", "close", "exit" or "end" - exit the address book and save it in file "address_book.bin"
-* - mandatory field      ** - optional field    '''
+1. "add [name]* [phones]** [emails]** [birthday]** [address]**" - adds a new contact to the address book
+    name - no more than three words
+    phones - can be several (each must contain 10 to 12 digits), enter with a space
+    emails - can be several, enter with a space
+    birthday - date in format dd/mm/yyyy (must be only one)
+    address - must contain street and house number, all elements must be separated by a slash and start with a slash (example: /Country/City/Street/House)
+2. shows phone numbers of a particular contact
+3. search for matches among existing contacts
+4. "when birthday [name]*" - calculates the number of days until the contact's next birthday
+5. "days until birthday: [any number]*" - displays the names of contacts whose birthday is in the specified number of days
+6. "change ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - change any contact's data
+7. "delete ('phone'/'email'/'birthday'/'address') [name]* [phone/email/birthday/address]*" - delete any contact's data
+8. show you full list of contacts in the address book
+9. exit the address book and save it in file "address_book.bin"
+    * - mandatory field ** - optional field'''
 
 # Об'єкти класу "адресна книга"
 class AddressBook(UserDict):
@@ -204,13 +204,12 @@ def main():
     # Умава, що забеспечує безкінечний цикл запиту, поки не буде виходу
     while bot_status:
         # Введення команди з консолі
-        command = input('Enter the command: ').lower()
+        command = input('Enter the command number: ').lower()
         # Додавання нового контакту
-        if command.startswith('add'):
-            command = command.removeprefix('add ')
+        if command.startswith('1'):
+            command = input('Enter the name of the contact and some information about them, separated by a space: ').lower()
             if Name(command).name in CONTACTS.data:
-                print(CONTACTS.data[Name(command).name].add_phone(
-                    Phone(command)))
+                print(CONTACTS.data[Name(command).name].add_phone(Phone(command)))
             # Додавання нової інформації до вже існуючого контакту
             else:
                 print(CONTACTS.add_record(
@@ -248,29 +247,29 @@ def main():
             command = command.removeprefix('delete address ')
             print(CONTACTS.data[Name(command).name].delete_address(Address(command)))
         # Вивід всіх існуючих номерів телефону певного контакту (вказувати ім'я після пробілу)
-        elif command.startswith('phone'):
-            command = command.removeprefix('phone ')
+        elif command.startswith('2'):
+            command = input('Enter the name of the contact: ').lower()
             print(CONTACTS.show_number(Name(command)))
         # Вивід всіх існуючих контактів у адресній книзі
-        elif command == "show all":
+        elif command == "8":
             if CONTACTS:
                 for contact in CONTACTS.show_all():
                     print(contact)
             else:
                 print('The contact list is empty.')
         # Вивід кількості днів до наступного дня народження певного контакту із тих, що маються
-        elif command.startswith('when birthday'):
-            command = command.removeprefix('when birthday ')
+        elif command.startswith('4'):
+            command = input('Enter the name of the contact: ').lower()
             print(CONTACTS.data[Name(command).name].days_to_birthday())
-        elif command.startswith('days until birthday'):
-            command = command.removeprefix('days until birthday: ')
+        elif command.startswith('5'):
+            command = input('Enter the number of days: ').lower()
             print(CONTACTS.birthday_after_n_days(command))
         # Пошук контакту за певною послідовністю літер або чисел
-        elif command.startswith('find'):
-            command = command.removeprefix('find ')
+        elif command.startswith('3'):
+            command = input('Enter any piece of information: ').lower()
             CONTACTS.find(command)
         # Вихід із програми (сюди треба додати автоматичне збереження наявної адресної книги)
-        elif command in ("good bye", "bye", "close", "exit", "end"):
+        elif command.startswith('9'):
             with open("address_book.bin", "wb") as fh:
                 pickle.dump(CONTACTS, fh)
             print("The address book is saved to a file 'address_book.bin'. See You later!")
