@@ -1,10 +1,10 @@
+from prettytable import PrettyTable
 import os
 import shutil
 import sys
 import zipfile
 import tarfile
 import gzip
-
 
 def normalize(name):
     translit_dict = {
@@ -69,7 +69,6 @@ def sort_files(folder_path):
             if not os.listdir(dir_path):
                 os.rmdir(dir_path)
 
-
 def extract_file(file_path, destination_folder):
     file_extension = os.path.splitext(file_path)[1].lower()
 
@@ -86,23 +85,39 @@ def extract_file(file_path, destination_folder):
                 extract_file.write(gz_ref.read())
 
     os.remove(file_path)
+
 def main():
-    choice = input("Enter 1 to specify the folder path for sorting or 2 to exit: ")
-    if choice == '1':
-        folder_name = input("Enter the folder path to sort: ")
-        folder_path = os.path.abspath(folder_name)
+    table = PrettyTable(['Command', 'Instruction'])
+    table.add_rows(
+        [
+            ["1", "Sort any folder"],
+            ["2", "Exit the Sorter"],
+        ]
+    )
 
-        if not os.path.isdir(folder_path):
-            print("Invalid folder path.")
-            sys.exit(1)
+    while True:
+        print("\nSorter Menu:")
+        print(table)
+        command = input("Enter command the command number: ")
 
-        sort_files(folder_path)
-        print("File sorting completed successfully.")
+        if command == '1':
+            folder_name = input("Enter the folder path to sort: ")
+            folder_path = os.path.abspath(folder_name)
 
-        sort_files(folder_path)
-    elif choice == '2':
-        pass
-    else:
-        print("Invalid choice.")
+            if not os.path.isdir(folder_path):
+                print("Invalid folder path.")
+                sys.exit(1)
+
+            sort_files(folder_path)
+            print("File sorting completed successfully.")
+
+            sort_files(folder_path)
+
+        elif command == '2':
+            break
+
+        else:
+            print("Invalid command.")
+
 if __name__ == "__main__":
     main()

@@ -6,8 +6,7 @@ from prettytable import PrettyTable
 def main():
     print("\nHello, this is Personal Helper")
 
-    table = PrettyTable()
-    table.field_names = ["Command", "instruction"]
+    table = PrettyTable(["Command", "instruction"])
     table.add_rows(
         [
             ["1", "Go to Address Book"],
@@ -18,6 +17,7 @@ def main():
     )
     
     while True:
+        print("\nPersonal Helper Menu:")
         print(table)
         string = input("Enter command to Personal Helper: ").lower()
 

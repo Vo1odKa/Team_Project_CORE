@@ -2,7 +2,6 @@ from prettytable import PrettyTable
 
 notes = []
 
-
 def add_note():
     # Додавання нотатки
     title = input('Enter a title for the note: ')
@@ -17,7 +16,6 @@ def add_note():
     notes.append(note)
     save_notes()
     print('Note successfully added and saved!')
-
 
 def edit_note():
     # Редагування нотатки
@@ -46,7 +44,6 @@ def edit_note():
     else:
         print('No note with this title was found.')
 
-
 def delete_note():
     # Видалення нотатки
     title = input('Enter the title of the note to delete: ')
@@ -64,7 +61,6 @@ def delete_note():
     else:
         print('No note with this title was found.')
 
-
 def search_notes():
     # Пошук нотаток
     keyword = input('Enter a keyword to search: ')
@@ -80,7 +76,6 @@ def search_notes():
         print(table)
     else:
         print('No notes found.')
-
 
 def sort_notes_by_tag():
     # Сортування нотаток за тегами
@@ -112,7 +107,6 @@ def sort_notes_by_tag():
     else:
         print('Invalid tag number.')
 
-
 def save_notes():
     # Збереження нотаток у файл
     with open('notes.txt', 'w') as file:
@@ -122,7 +116,6 @@ def save_notes():
             if note['tags']:
                 file.write(f"Tags: {', '.join(note['tags'])}\n")
             file.write('\n')
-
 
 def load_notes():
     # Завантаження нотаток з файлу
@@ -150,23 +143,23 @@ def load_notes():
     except FileNotFoundError:
         pass
 
-
 def notes_menu():
-    print("\nHello, this is Notes Menu:")
     table = PrettyTable(['Command', 'Instruction'])
     table.add_rows(
         [
-            ["1", "Add a note."],
-            ["2", "Edit note."],
-            ["3", "Delete note."],
-            ["4", "Search notes."],
-            ["5", "Sort notes by tags."],
-            ["6", "Go out."],
+            ["1", "Add a note"],
+            ["2", "Edit note"],
+            ["3", "Delete note"],
+            ["4", "Search notes"],
+            ["5", "Sort notes by tags"],
+            ["6", "Exit the notes"],
         ]
     )
+
     while True:
+        print("\nNotes Menu:")
         print(table)
-        command = input("Enter command to Notes Menu: ")
+        command = input("Enter command the command number: ")
 
         if command == "1":
             add_note()
@@ -183,11 +176,9 @@ def notes_menu():
         else:
             print("Invalid command.")
 
-
 def main():
     load_notes()
     notes_menu()
-
 
 if __name__ == "__main__":
     main()
