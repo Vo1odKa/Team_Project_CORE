@@ -69,10 +69,11 @@ def search_notes():
         for note in notes
         if keyword.lower() in note['title'].lower()
         or keyword.lower() in note['content'].lower()
+        or keyword.lower() in [x.lower() for x in note['tags']]
     ]:
-        table = PrettyTable(['Title', 'Text'])
+        table = PrettyTable(['Title', 'Text', 'Tags'])
         for note in found_notes:
-            table.add_row([note['title'], note['content']])
+            table.add_row([note['title'], note['content'], note['tags']])
         print(table)
     else:
         print('No notes found.')
