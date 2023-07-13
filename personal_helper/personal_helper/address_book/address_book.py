@@ -140,7 +140,7 @@ class Field:
         if not self.birthday:
             self.birthday = ""
         # Відокремлює всі адреси електронної пошти
-        self.email = re.findall(r'[a-zA-Z0-9_.]+@[a-zA-Z]+[.][a-zA-Z]{2,}', data)
+        self.email = re.findall(r'[a-zA-Z0-9_.-]+@[a-zA-Z]+[.][a-zA-Z]{2,}', data)
         if not self.email:
             self.email = ""
         # Відокремлює адресу контакту
