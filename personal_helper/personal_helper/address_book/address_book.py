@@ -17,12 +17,16 @@ Adding instruction:
 class AddressBook(UserDict):
     # Функція, що записує контакт до адресної книги
     def add_record(self, Record):
-        self.update({Record.Name.name: Record})
+        self.data.update({Record.Name.name: Record})
         return "Done!"
 
     # Функція, що виводить Номери телефону певного контакту
     def show_number(self, Name):
         return self.data[Name.name].Phones.phone
+    
+    def delete_record(self, Record):
+        self.data.pop(Record.Name.name)
+        return "Done!"
 
     # Функція, що виводить спbсок всіх контактів, що містяться у адресній книзі
     def show_all(self):
@@ -214,14 +218,26 @@ def main():
     )
     table.align["Instruction"] = "l"
 
-    change_or_delete_menu = PrettyTable(['Command', 'Instruction'])
-    change_or_delete_menu.add_rows(
+    change_menu = PrettyTable(['Command', 'Instruction'])
+    change_menu.add_rows(
         [
             ["1", "Phone"],
             ["2", "Email"],
             ["3", "Birthday"],
             ["4", "Address"],
             ["5", "Go back"],
+        ]
+    )
+
+    delete_menu = PrettyTable(['Command', 'Instruction'])
+    delete_menu.add_rows(
+        [
+            ["1", "Phone"],
+            ["2", "Email"],
+            ["3", "Birthday"],
+            ["4", "Address"],
+            ["5", "Delete contact"],
+            ["6", "Go back"],
         ]
     )
     
@@ -265,7 +281,7 @@ def main():
             print(CONTACTS.birthday_after_n_days(command))
 
         elif command.startswith('6'):
-            print(change_or_delete_menu)
+            print(change_menu)
             command = input('Enter the number of the element you want to change: ')
             # Зміна номеру телефону у вже існуючому контакті
             if command.startswith('1'):
@@ -290,7 +306,7 @@ def main():
                 print("Invalid command.")
 
         elif command.startswith('7'):
-            print(change_or_delete_menu)
+            print(delete_menu)
             command = input('Enter the number of the element you want to delete: ')
             # Видалення номеру телефону з вже існуючого контакту
             if command.startswith('1'):
@@ -308,8 +324,11 @@ def main():
             elif command.startswith('4'):
                 command = input('Enter the name of the contact: ').capitalize()
                 print(CONTACTS.data[Name(command).name].delete_address())
-            # Вихід у попереднє меню
             elif command.startswith('5'):
+                command = input('Enter the name of the contact: ').capitalize()
+                print(CONTACTS.delete_record(Record(Name(command))))
+            # Вихід у попереднє меню
+            elif command.startswith('6'):
                 pass
             else:
                 print("Invalid command.")
