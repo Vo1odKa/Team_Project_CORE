@@ -1,6 +1,6 @@
-from .address_book.address_book import main as address_book
-from .notes.notes import main as notes
-from .sort.sort import main as sort
+from address_book.address_book import main as address_book
+from notes.notes import main as notes
+from sort.sort import main as sort
 from prettytable import PrettyTable
 
 def main():
